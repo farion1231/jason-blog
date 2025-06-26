@@ -9,20 +9,29 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@portabletext/react": "^3.2.1",
+    "@portabletext/to-html": "^2.0.14",
+    "@sanity/client": "^7.6.0",
+    "@sanity/code-input": "^5.1.2",
+    "@sanity/image-url": "^1.1.0",
+    "@sanity/vision": "^3.95.0",
     "@tailwindcss/typography": "^0.5.16",
     "date-fns": "^4.1.0",
     "gray-matter": "^4.0.3",
     "next": "15.3.4",
+    "next-sanity": "^9.12.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "rehype-highlight": "^7.0.2",
     "rehype-raw": "^7.0.0",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
-    "remark-html": "^16.0.1"
+    "remark-html": "^16.0.1",
+    "sanity": "^3.95.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@sanity/cli": "^3.95.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

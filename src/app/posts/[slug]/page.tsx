@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import Link from 'next/link';
+import PortableText from '@/components/PortableText';
 
 interface PostPageProps {
   params: Promise<{
@@ -11,7 +12,7 @@ interface PostPageProps {
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllPostSlugs();
+  const slugs = await getAllPostSlugs();
   return slugs.map((slug) => ({
     slug: slug,
   }));
@@ -83,21 +84,8 @@ export default async function PostPage({ params }: PostPageProps) {
         </header>
 
         {/* Content */}
-        <div className="text-lg leading-relaxed [&>h1]:mt-12 [&>h1]:mb-6 [&>h2]:mt-10 [&>h2]:mb-5 [&>h3]:mt-8 [&>h3]:mb-4 [&>p]:mb-6 [&>pre]:my-8 [&>blockquote>p:last-child]:mb-0">
-          <div 
-            className="prose prose-lg max-w-none 
-              prose-headings:font-bold prose-headings:text-gray-900
-              prose-p:text-gray-900 prose-p:leading-relaxed
-              prose-a:text-blue-500 prose-a:no-underline hover:prose-a:text-pink-500
-              prose-strong:text-gray-900 prose-strong:font-semibold
-              prose-code:text-blue-500 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:text-sm
-              prose-pre:bg-gray-100 prose-pre:border prose-pre:border-gray-200 prose-pre:shadow-sm
-              prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-gray-50 prose-blockquote:py-1 prose-blockquote:px-6
-              prose-img:rounded-xl prose-img:shadow-lg prose-img:mx-auto
-              prose-ul:list-disc prose-ol:list-decimal
-              prose-li:text-gray-900"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+        <div className="text-lg leading-relaxed">
+          <PortableText value={post.content} />
         </div>
 
         {/* Footer */}
@@ -125,7 +113,7 @@ export default async function PostPage({ params }: PostPageProps) {
             <div className="grid grid-cols-2 gap-6 max-w-sm mx-auto">
               <div>
                 <p className="text-2xl font-bold text-blue-500">
-                  ~{post.content.replace(/<[^>]*>/g, '').split(/\s+/).length}
+                  ~{post.readingTime * 250}
                 </p>
                 <p className="text-gray-500 mt-1">字数</p>
               </div>
