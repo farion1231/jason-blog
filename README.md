@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 极客风格博客
 
-## Getting Started
+一个使用 Next.js 14 构建的极简风格技术博客，专注于内容和极客体验。
 
-First, run the development server:
+## ✨ 特性
+
+- 🎨 **极客风格设计** - 黑绿配色，终端风格UI
+- ⚡ **高性能** - Next.js 14 + Static Generation
+- 📝 **Markdown 支持** - 支持 GFM 和代码高亮
+- 🎯 **专注内容** - 极简设计，突出文章内容
+- 📱 **响应式** - 完美适配各种设备
+- 🔍 **SEO 友好** - 优化的元数据和结构化数据
+
+## 🛠️ 技术栈
+
+- **框架**: Next.js 14 (App Router)
+- **语言**: TypeScript
+- **样式**: Tailwind CSS
+- **内容**: Markdown + Gray Matter
+- **代码高亮**: Remark + Rehype
+- **字体**: JetBrains Mono + Inter
+
+## 🚀 快速开始
+
+### 安装依赖
+
+```bash
+npm install
+```
+
+### 启动开发服务器
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+服务器将在 [http://localhost:3000](http://localhost:3000) 启动。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 构建生产版本
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## 📁 项目结构
 
-To learn more about Next.js, take a look at the following resources:
+```
+├── src/
+│   ├── app/                # Next.js App Router 页面
+│   │   ├── layout.tsx      # 根布局
+│   │   ├── page.tsx        # 首页
+│   │   ├── posts/          # 博客相关页面
+│   │   └── about/          # 关于页面
+│   ├── lib/                # 工具函数
+│   │   └── posts.ts        # 博客文章处理
+│   └── types/              # TypeScript 类型定义
+│       └── post.ts         # 文章类型
+├── content/
+│   └── posts/              # Markdown 文章
+├── public/                 # 静态资源
+└── tailwind.config.js      # Tailwind 配置
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✍️ 写作指南
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 创建新文章
 
-## Deploy on Vercel
+1. 在 `content/posts/` 目录下创建 `.md` 文件
+2. 添加 frontmatter 元数据：
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```markdown
+---
+title: "文章标题"
+date: "2024-01-15"
+description: "文章描述"
+tags: ["tag1", "tag2"]
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 文章内容
+
+这里是文章正文...
+```
+
+### 支持的功能
+
+- **代码高亮**: 支持多种编程语言
+- **表格**: 使用 GFM 表格语法
+- **任务列表**: `- [ ]` 和 `- [x]`
+- **自动链接**: URL 自动转换为链接
+
+## 🎨 自定义主题
+
+### 修改配色
+
+编辑 `src/app/globals.css` 中的 CSS 变量：
+
+```css
+:root {
+  --geek-bg: #0a0a0a;        /* 背景色 */
+  --geek-text: #e0e0e0;      /* 文字色 */
+  --geek-accent: #00ff41;    /* 强调色 */
+  --geek-secondary: #888888; /* 次要文字色 */
+  --geek-border: #333333;    /* 边框色 */
+}
+```
+
+## 📊 性能优化
+
+- ✅ 静态生成 (SSG)
+- ✅ 代码分割
+- ✅ 图片优化
+- ✅ 字体优化
+- ✅ CSS 压缩
+
+## 🔧 开发脚本
+
+```bash
+# 开发
+npm run dev          # 启动开发服务器
+
+# 构建
+npm run build        # 构建生产版本
+npm start            # 启动生产服务器
+
+# 代码质量
+npm run lint         # ESLint 检查
+```
+
+---
+
+**享受极客风格的写作体验！** 🚀
