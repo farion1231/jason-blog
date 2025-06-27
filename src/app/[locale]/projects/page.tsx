@@ -1,5 +1,6 @@
 import { getTranslations, type Locale } from '@/lib/i18n';
 import { projects, type Project } from '@/data/projects';
+import Image from 'next/image';
 
 interface ProjectsPageProps {
   params: Promise<{ locale: Locale }>;
@@ -99,11 +100,21 @@ function ProjectCard({
 
   return (
     <article className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 ${featured ? 'md:col-span-1' : ''}`}>
-      {project.image && (
-        <div className="h-48 bg-gradient-to-br from-blue-500/20 to-pink-500/20 flex items-center justify-center">
-          <span className="text-6xl">🚀</span>
-        </div>
-      )}
+      <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-pink-500/20">
+        {project.image ? (
+          <Image
+            src={project.image}
+            alt={project.title[locale]}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="h-full flex items-center justify-center">
+            <span className="text-6xl">🚀</span>
+          </div>
+        )}
+      </div>
       
       <div className="p-6 space-y-4">
         <div className="flex items-start justify-between gap-2">
