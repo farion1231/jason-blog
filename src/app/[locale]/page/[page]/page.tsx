@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { getPostsByLanguagePaginated } from '@/lib/posts';
 import { PostMeta } from '@/types/post';
 import { formatDistanceToNow } from 'date-fns';
@@ -8,15 +9,26 @@ import Pagination from '@/components/Pagination';
 type DateLocale = typeof zhCN | typeof enUS;
 
 interface PageProps {
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: Locale; page: string }>;
 }
 
-export default async function HomePage({ params }: PageProps) {
-  const { locale } = await params;
-  const { posts, totalPages, totalPosts } = await getPostsByLanguagePaginated(
+export default async function PaginatedPage({ params }: PageProps) {
+  const { locale, page } = await params;
+  const pageNumber = parseInt(page, 10);
+  
+  if (isNaN(pageNumber) || pageNumber < 1) {
+    notFound();
+  }
+  
+  const { posts, totalPages, currentPage } = await getPostsByLanguagePaginated(
     locale === 'zh-CN' ? 'zh-CN' : 'en',
-    1
+    pageNumber
   );
+  
+  if (pageNumber > totalPages && totalPages > 0) {
+    notFound();
+  }
+  
   const dateLocale: DateLocale = locale === 'zh-CN' ? zhCN : enUS;
   const t = getTranslations(locale);
 
@@ -30,7 +42,7 @@ export default async function HomePage({ params }: PageProps) {
               <span className="bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">{t.home.title}</span>
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              {t.home.subtitle(totalPosts)}
+              {locale === 'zh-CN' ? `第 ${currentPage} 页` : `Page ${currentPage}`}
             </p>
           </div>
         </div>
@@ -58,7 +70,7 @@ export default async function HomePage({ params }: PageProps) {
               </div>
               
               <Pagination
-                currentPage={1}
+                currentPage={currentPage}
                 totalPages={totalPages}
                 locale={locale}
               />

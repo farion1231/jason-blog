@@ -70,5 +70,23 @@ export const queries = {
   }`,
   
   // 获取所有文章的 slug（用于生成静态路径）
-  postSlugs: `*[_type == "post" && !isDraft].slug.current`
+  postSlugs: `*[_type == "post" && !isDraft].slug.current`,
+  
+  // 分页查询：根据语言获取文章
+  postsByLanguagePaginated: `{
+    "items": *[_type == "post" && !isDraft && language == $language] | order(publishedAt desc)[$start...$end] {
+      _id,
+      title,
+      slug,
+      language,
+      description,
+      publishedAt,
+      tags,
+      "readingTime": round(length(pt::text(content)) / 5 / 250)
+    },
+    "total": count(*[_type == "post" && !isDraft && language == $language])
+  }`,
+  
+  // 获取文章总数
+  postCountByLanguage: `count(*[_type == "post" && !isDraft && language == $language])`
 }
