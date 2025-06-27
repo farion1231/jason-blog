@@ -25,13 +25,13 @@ export default function ProjectsPage() {
   const getStatusColor = (status: Project['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400';
       case 'completed':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400';
       case 'archived':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300';
     }
   };
 
@@ -55,27 +55,27 @@ export default function ProjectsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent mb-4">
             我的项目
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             这里展示了我开发的一些项目，涵盖前端、后端、移动端等多个领域
           </p>
         </div>
 
         {/* Filters */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 mb-8 shadow-lg border border-white/20">
+        <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 mb-8 shadow-lg border border-white/20 dark:border-gray-700">
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">标签:</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">标签:</label>
               <select
                 value={selectedTag}
                 onChange={(e) => setSelectedTag(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-gray-200 bg-white/80 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white/80 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">全部标签</option>
                 {getAllTags().map(tag => (
@@ -85,11 +85,11 @@ export default function ProjectsPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">语言:</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">语言:</label>
               <select
                 value={selectedLanguage}
                 onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-gray-200 bg-white/80 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white/80 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">全部语言</option>
                 {getAllLanguages().map(lang => (
@@ -99,11 +99,11 @@ export default function ProjectsPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">状态:</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">状态:</label>
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value as Project['status'] | '')}
-                className="px-3 py-2 rounded-lg border border-gray-200 bg-white/80 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white/80 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">全部状态</option>
                 <option value="active">进行中</option>
@@ -115,7 +115,7 @@ export default function ProjectsPage() {
             {(selectedTag || selectedLanguage || selectedStatus) && (
               <button
                 onClick={clearFilters}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 清除筛选
               </button>
@@ -128,11 +128,11 @@ export default function ProjectsPage() {
           {filteredProjects.map(project => (
             <div
               key={project.id}
-              className="group bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+              className="group bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
             >
               {/* Project Header */}
               <div className="flex items-start justify-between mb-4">
-                <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {project.name}
                 </h3>
                 {project.featured && (
@@ -141,7 +141,7 @@ export default function ProjectsPage() {
               </div>
 
               {/* Project Description */}
-              <p className="text-gray-600 mb-4 line-clamp-3">
+              <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
                 {project.description}
               </p>
 
@@ -150,20 +150,20 @@ export default function ProjectsPage() {
                 {project.tags.slice(0, 3).map(tag => (
                   <span
                     key={tag}
-                    className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800"
+                    className="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400"
                   >
                     {tag}
                   </span>
                 ))}
                 {project.tags.length > 3 && (
-                  <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-600">
+                  <span className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                     +{project.tags.length - 3}
                   </span>
                 )}
               </div>
 
               {/* Project Meta */}
-              <div className="flex items-center justify-between mb-4 text-sm text-gray-500">
+              <div className="flex items-center justify-between mb-4 text-sm text-gray-500 dark:text-gray-400">
                 <span className="flex items-center gap-1">
                   <span className="w-3 h-3 rounded-full bg-blue-500"></span>
                   {project.language}
@@ -184,7 +184,7 @@ export default function ProjectsPage() {
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 px-4 py-2 bg-gray-800 text-white text-center rounded-lg hover:bg-gray-700 transition-colors text-sm"
+                  className="flex-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-center rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-sm"
                 >
                   GitHub
                 </a>
@@ -201,7 +201,7 @@ export default function ProjectsPage() {
               </div>
 
               {/* Creation Date */}
-              <div className="mt-4 pt-4 border-t border-gray-200 text-xs text-gray-400">
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-400 dark:text-gray-500">
                 创建于 {new Date(project.createdAt).toLocaleDateString('zh-CN')}
               </div>
             </div>
@@ -212,36 +212,36 @@ export default function ProjectsPage() {
         {filteredProjects.length === 0 && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-xl font-medium text-gray-600 mb-2">没有找到匹配的项目</h3>
-            <p className="text-gray-500">请尝试调整筛选条件</p>
+            <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300 mb-2">没有找到匹配的项目</h3>
+            <p className="text-gray-500 dark:text-gray-400">请尝试调整筛选条件</p>
           </div>
         )}
 
         {/* Stats */}
-        <div className="mt-16 bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">项目统计</h2>
+        <div className="mt-16 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 dark:border-gray-700">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">项目统计</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-blue-600">{projects.length}</div>
-              <div className="text-sm text-gray-600">总项目数</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">总项目数</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-green-600">
                 {projects.filter(p => p.status === 'active').length}
               </div>
-              <div className="text-sm text-gray-600">进行中</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">进行中</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-pink-600">
                 {projects.reduce((sum, p) => sum + (p.stars || 0), 0)}
               </div>
-              <div className="text-sm text-gray-600">总星标数</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">总星标数</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-purple-600">
                 {getAllLanguages().length}
               </div>
-              <div className="text-sm text-gray-600">使用语言</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">使用语言</div>
             </div>
           </div>
         </div>

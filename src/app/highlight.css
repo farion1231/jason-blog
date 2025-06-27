@@ -3,21 +3,34 @@
   display: block;
   overflow-x: auto;
   padding: 1.5rem;
-  background: #f8fafc !important;
+  background: #f8fafc;
   color: #334155;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  font-family: var(--font-jetbrains-mono), 'Monaco', 'Menlo', monospace;
+  font-family: 'JetBrains Mono', 'Monaco', 'Menlo', monospace;
   font-size: 0.875rem;
   line-height: 1.6;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
-/* 基础样式 */
+/* 暗色模式 */
+.dark .hljs {
+  background: #1e293b;
+  color: #e2e8f0;
+  border: 1px solid #374151;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* 基础语法高亮 */
 .hljs-comment,
 .hljs-quote {
   color: #94a3b8;
   font-style: italic;
+}
+
+.dark .hljs-comment,
+.dark .hljs-quote {
+  color: #64748b;
 }
 
 .hljs-keyword,
@@ -25,6 +38,12 @@
 .hljs-subst {
   color: #3b82f6;
   font-weight: 500;
+}
+
+.dark .hljs-keyword,
+.dark .hljs-selector-tag,
+.dark .hljs-subst {
+  color: #60a5fa;
 }
 
 .hljs-number,
@@ -35,9 +54,22 @@
   color: #ec4899;
 }
 
+.dark .hljs-number,
+.dark .hljs-literal,
+.dark .hljs-variable,
+.dark .hljs-template-variable,
+.dark .hljs-tag .hljs-attr {
+  color: #f472b6;
+}
+
 .hljs-string,
 .hljs-doctag {
   color: #10b981;
+}
+
+.dark .hljs-string,
+.dark .hljs-doctag {
+  color: #34d399;
 }
 
 .hljs-title,
@@ -47,10 +79,21 @@
   font-weight: 500;
 }
 
+.dark .hljs-title,
+.dark .hljs-section,
+.dark .hljs-selector-id {
+  color: #a78bfa;
+}
+
 .hljs-type,
 .hljs-class .hljs-title {
   color: #06b6d4;
   font-weight: 500;
+}
+
+.dark .hljs-type,
+.dark .hljs-class .hljs-title {
+  color: #22d3ee;
 }
 
 .hljs-tag,
@@ -60,9 +103,20 @@
   font-weight: normal;
 }
 
+.dark .hljs-tag,
+.dark .hljs-name,
+.dark .hljs-attribute {
+  color: #fbbf24;
+}
+
 .hljs-regexp,
 .hljs-link {
   color: #ef4444;
+}
+
+.dark .hljs-regexp,
+.dark .hljs-link {
+  color: #f87171;
 }
 
 .hljs-symbol,
@@ -70,21 +124,43 @@
   color: #a855f7;
 }
 
+.dark .hljs-symbol,
+.dark .hljs-bullet {
+  color: #c084fc;
+}
+
 .hljs-built_in,
 .hljs-builtin-name {
   color: #0ea5e9;
+}
+
+.dark .hljs-built_in,
+.dark .hljs-builtin-name {
+  color: #38bdf8;
 }
 
 .hljs-meta {
   color: #6b7280;
 }
 
+.dark .hljs-meta {
+  color: #9ca3af;
+}
+
 .hljs-deletion {
   background: rgba(239, 68, 68, 0.1);
 }
 
+.dark .hljs-deletion {
+  background: rgba(239, 68, 68, 0.2);
+}
+
 .hljs-addition {
   background: rgba(16, 185, 129, 0.1);
+}
+
+.dark .hljs-addition {
+  background: rgba(16, 185, 129, 0.2);
 }
 
 .hljs-emphasis {

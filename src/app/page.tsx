@@ -9,13 +9,13 @@ export default async function Home() {
   return (
     <>
       {/* Header */}
-      <section className="py-16 md:py-8 bg-gradient-to-b from-gray-50 to-transparent">
+      <section className="py-16 md:py-8 bg-gradient-to-b from-gray-50 dark:from-gray-900 to-transparent">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center space-y-4 animate-fadeIn">
             <h1 className="text-4xl md:text-5xl font-bold">
               <span className="bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">我的博客</span>
             </h1>
-            <p className="text-lg text-gray-500">
+            <p className="text-lg text-gray-500 dark:text-gray-400">
               共 {posts.length} 篇文章 • 持续更新中 🌱
             </p>
           </div>
@@ -28,10 +28,10 @@ export default async function Home() {
           {posts.length === 0 ? (
             <div className="text-center py-20">
               <div className="text-6xl mb-6">📝</div>
-              <p className="text-xl text-gray-500">
+              <p className="text-xl text-gray-500 dark:text-gray-400">
                 还没有发布任何文章
               </p>
-              <p className="text-gray-400 mt-3">
+              <p className="text-gray-400 dark:text-gray-500 mt-3">
                 敬请期待更多精彩内容...
               </p>
             </div>
@@ -55,16 +55,16 @@ function PostCard({ post }: { post: PostMeta }) {
   });
 
   return (
-    <article className="bg-white rounded-2xl p-8 shadow-md transition-all hover:shadow-xl hover:-translate-y-0.5 group">
+    <article className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-md transition-all hover:shadow-xl hover:-translate-y-0.5 group">
       <div className="space-y-4">
         {/* Title and Meta */}
         <div>
-          <h2 className="text-2xl font-semibold mb-3 group-hover:text-blue-500 transition-colors">
+          <h2 className="text-2xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-blue-500 transition-colors">
             <a href={`/posts/${post.slug}`}>
               {post.title}
             </a>
           </h2>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
             <span>📅 {post.date}</span>
             <span>•</span>
             <span>{relativeTime}</span>
@@ -75,7 +75,7 @@ function PostCard({ post }: { post: PostMeta }) {
 
         {/* Description */}
         {post.description && (
-          <p className="text-gray-500 leading-relaxed">
+          <p className="text-gray-500 dark:text-gray-400 leading-relaxed">
             {post.description}
           </p>
         )}

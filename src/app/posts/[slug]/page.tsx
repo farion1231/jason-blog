@@ -52,11 +52,11 @@ export default async function PostPage({ params }: PostPageProps) {
       <article className="max-w-4xl mx-auto py-12">
         {/* Header */}
         <header className="space-y-6 mb-12 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 leading-tight">
             {post.title}
           </h1>
           
-          <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
             <span>📅 {post.date}</span>
             <span>•</span>
             <span>{relativeTime}</span>
@@ -66,7 +66,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
           {/* Description */}
           {post.description && (
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
               {post.description}
             </p>
           )}
@@ -84,12 +84,12 @@ export default async function PostPage({ params }: PostPageProps) {
         </header>
 
         {/* Content */}
-        <div className="text-lg leading-relaxed">
+        <div className="text-lg leading-relaxed text-gray-900 dark:text-gray-100">
           <PortableText value={post.content} />
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 pt-8 border-t border-gray-200">
+        <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
           {/* Navigation */}
           <div className="flex justify-between items-center mb-12">
             <Link
@@ -101,27 +101,27 @@ export default async function PostPage({ params }: PostPageProps) {
             
             <Link
               href="/"
-              className="text-gray-500 hover:text-blue-500 font-medium inline-flex items-center gap-2"
+              className="text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 font-medium inline-flex items-center gap-2"
             >
               回到首页 →
             </Link>
           </div>
 
           {/* Article stats */}
-          <div className="bg-gray-50 rounded-2xl p-8 text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">文章统计</h3>
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-6">文章统计</h3>
             <div className="grid grid-cols-2 gap-6 max-w-sm mx-auto">
               <div>
                 <p className="text-2xl font-bold text-blue-500">
                   ~{post.readingTime * 250}
                 </p>
-                <p className="text-gray-500 mt-1">字数</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-1">字数</p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-pink-500">
                   {post.date}
                 </p>
-                <p className="text-gray-500 mt-1">发布日期</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-1">发布日期</p>
               </div>
             </div>
           </div>
