@@ -41,8 +41,15 @@ export const translations = {
     projects: {
       title: '我的项目',
       subtitle: '探索我的作品集',
-      comingSoon: '项目展示即将上线',
-      comingSoonDesc: '我正在整理我的项目作品集，敬请期待！',
+      featured: '精选项目',
+      all: '所有项目',
+      demo: '演示',
+      code: '代码',
+      status: {
+        completed: '已完成',
+        inProgress: '开发中',
+        planned: '计划中'
+      }
     },
     // 文章页面
     post: {
@@ -92,8 +99,15 @@ export const translations = {
     projects: {
       title: 'My Projects',
       subtitle: 'Explore my portfolio',
-      comingSoon: 'Project showcase coming soon',
-      comingSoonDesc: 'I\'m organizing my project portfolio, stay tuned!',
+      featured: 'Featured Projects',
+      all: 'All Projects',
+      demo: 'Demo',
+      code: 'Code',
+      status: {
+        completed: 'Completed',
+        inProgress: 'In Progress',
+        planned: 'Planned'
+      }
     },
     // 文章页面
     post: {

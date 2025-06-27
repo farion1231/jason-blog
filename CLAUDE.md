@@ -17,30 +17,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 这是一个基于 Next.js 15 的博客系统，使用 App Router，采用小清新风格设计，界面简洁优雅。
 
 **核心架构：**
-- **内容系统**: `content/posts/` 目录下的 Markdown 文件，使用 gray-matter 解析 frontmatter
-- **Markdown 处理**: 使用 remark → remarkGfm → remarkHtml 处理链，rehype-highlight 提供代码语法高亮
+- **内容系统**: Sanity Headless CMS，提供可视化编辑器和实时预览
+- **内容处理**: 使用 Portable Text 格式，支持富文本编辑和结构化内容
 - **样式系统**: Tailwind CSS + 小清新主题，采用蓝粉渐变配色和圆角卡片设计
 - **字体配置**: UI 使用 Inter 字体，代码使用等宽字体
-- **静态生成**: 所有文章在构建时静态生成
+- **静态生成**: 所有文章通过 Sanity API 在构建时静态生成
 
 **关键文件：**
-- `src/lib/posts.ts`: 核心博客功能 - 处理文章解析、元数据提取、阅读时间计算
+- `src/lib/posts.ts`: 核心博客功能 - 从 Sanity 获取文章数据，处理格式转换
+- `src/lib/sanity.ts`: Sanity 客户端配置和 GROQ 查询
 - `src/types/post.ts`: Post 和 PostMeta 的 TypeScript 接口定义
 - `src/app/layout.tsx`: 根布局，包含页面头部/底部和字体设置
-- `content/posts/*.md`: 博客文章，包含 frontmatter (title, date, description, tags)
+- `schemas/post.ts`: Sanity 文章模式定义
 
-**文章 Frontmatter 格式：**
-```yaml
----
-title: "文章标题"
-date: "2024-01-15"
-description: "文章描述"
-tags: ["tag1", "tag2"]
----
+**Sanity 文章模式：**
+```typescript
+{
+  title: string,
+  slug: string,
+  language: 'zh-CN' | 'en',
+  description: string,
+  publishedAt: string,
+  tags: string[],
+  content: PortableTextBlock[],
+  readingTime: number
+}
 ```
 
 **主题系统：**
 设计采用小清新风格，使用蓝粉渐变、白色背景、圆角卡片和柔和阴影。主色调为蓝色(#3B82F6)和粉色(#EC4899)，营造清新愉悦的阅读体验。
 
-**内容处理：**
-文章通过 remark/rehype 处理链支持 GFM (GitHub Flavored Markdown)、代码高亮和原始 HTML。阅读时间按约 250 字/分钟自动计算。
+**内容管理：**
+使用 Sanity Studio 进行内容管理，支持富文本编辑、图片上传、实时预览、版本控制等专业 CMS 功能。阅读时间通过 GROQ 查询自动计算。
