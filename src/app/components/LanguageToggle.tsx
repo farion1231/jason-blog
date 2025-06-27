@@ -29,7 +29,7 @@ export function LanguageToggle() {
     <button
       onClick={toggleLanguage}
       disabled={isPending}
-      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50"
+      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors hover:text-blue-500 dark:hover:text-blue-400 disabled:opacity-50"
       aria-label={`Switch to ${isEnglish ? 'Chinese' : 'English'}`}
     >
       <span className={`text-lg ${isPending ? 'animate-spin' : ''}`}>🌐</span>
