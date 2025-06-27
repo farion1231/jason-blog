@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 主题切换平滑过渡效果 */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 确保部分元素也有过渡效果 */
+html {
+  transition: background-color 0.3s ease;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 /* 字体配置 */
 @font-face {
   font-family: 'Inter';
