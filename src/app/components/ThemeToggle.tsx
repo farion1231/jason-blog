@@ -2,7 +2,6 @@
 
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-// import { Button } from '@heroui/react';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/solid';
 
 export function ThemeToggle() {

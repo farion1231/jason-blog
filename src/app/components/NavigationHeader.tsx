@@ -7,6 +7,11 @@ import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 import { getTranslations } from '@/lib/i18n';
 
+const navLinkClasses = {
+  desktop: "text-gray-500 dark:text-gray-400 font-medium transition-colors relative hover:text-blue-500 after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full",
+  mobile: "text-gray-500 dark:text-gray-400 font-medium transition-colors hover:text-blue-500 px-2 py-1"
+};
+
 export function NavigationHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -20,7 +25,7 @@ export function NavigationHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
+    <header className="sticky top-0 z-50 glass border-b">
       <nav className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           <Link href={getLocalizedPath('/')} className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
@@ -29,9 +34,9 @@ export function NavigationHeader() {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href={getLocalizedPath('/')} className="text-gray-500 dark:text-gray-400 font-medium transition-colors relative hover:text-blue-500 after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full">{t.nav.home}</Link>
-            <Link href={getLocalizedPath('/projects')} className="text-gray-500 dark:text-gray-400 font-medium transition-colors relative hover:text-blue-500 after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full">{t.nav.projects}</Link>
-            <Link href={getLocalizedPath('/about')} className="text-gray-500 dark:text-gray-400 font-medium transition-colors relative hover:text-blue-500 after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full">{t.nav.about}</Link>
+            <Link href={getLocalizedPath('/')} className={navLinkClasses.desktop}>{t.nav.home}</Link>
+            <Link href={getLocalizedPath('/projects')} className={navLinkClasses.desktop}>{t.nav.projects}</Link>
+            <Link href={getLocalizedPath('/about')} className={navLinkClasses.desktop}>{t.nav.about}</Link>
             <LanguageToggle />
             <ThemeToggle />
           </div>
@@ -57,25 +62,25 @@ export function NavigationHeader() {
         
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 py-4">
+          <div className="md:hidden glass-strong border-t py-4">
             <div className="flex flex-col space-y-4">
               <Link 
                 href={getLocalizedPath('/')} 
-                className="text-gray-500 dark:text-gray-400 font-medium transition-colors hover:text-blue-500 px-2 py-1"
+                className={navLinkClasses.mobile}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t.nav.home}
               </Link>
               <Link 
                 href={getLocalizedPath('/projects')} 
-                className="text-gray-500 dark:text-gray-400 font-medium transition-colors hover:text-blue-500 px-2 py-1"
+                className={navLinkClasses.mobile}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t.nav.projects}
               </Link>
               <Link 
                 href={getLocalizedPath('/about')} 
-                className="text-gray-500 dark:text-gray-400 font-medium transition-colors hover:text-blue-500 px-2 py-1"
+                className={navLinkClasses.mobile}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t.nav.about}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useTransition } from 'react';
 
 export function LanguageToggle() {
   const router = useRouter();

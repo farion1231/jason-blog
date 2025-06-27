@@ -122,7 +122,3 @@ export const translations = {
 export function getTranslations(locale: Locale) {
   return translations[locale];
 }
-
-export function detectLocale(pathname: string): Locale {
-  return pathname.startsWith('/en') ? 'en' : 'zh-CN';
-}

@@ -19,13 +19,13 @@ export default async function HomePage({ params }: PageProps) {
   return (
     <>
       {/* Header */}
-      <section className="py-16 md:py-8 bg-gradient-to-b from-gray-50 dark:from-gray-900 to-transparent">
+      <section className="py-16 md:py-8">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center space-y-4 animate-fadeIn">
+          <div className="text-center space-y-4 animate-fadeIn glass-subtle rounded-3xl p-12">
             <h1 className="text-4xl md:text-5xl font-bold">
               <span className="bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">{t.home.title}</span>
             </h1>
-            <p className="text-lg text-gray-500 dark:text-gray-400">
+            <p className="text-lg text-gray-600 dark:text-gray-300">
               {t.home.subtitle(posts.length)}
             </p>
           </div>
@@ -80,7 +80,7 @@ function PostCard({
   });
 
   return (
-    <article className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-md transition-all hover:shadow-xl hover:-translate-y-0.5 group">
+    <article className="glass rounded-2xl p-8 transition-all hover:shadow-xl hover:-translate-y-1 hover:glass-strong group">
       <div className="space-y-4">
         {/* Title and Meta */}
         <div>
