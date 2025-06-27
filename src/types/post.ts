@@ -7,6 +7,7 @@ export interface SanityPost {
   slug: {
     current: string;
   };
+  language: string;
   description?: string;
   publishedAt: string;
   tags?: string[];
@@ -19,6 +20,7 @@ export interface Post {
   slug: string;
   title: string;
   date: string;
+  language: string;
   description: string;
   tags: string[];
   content: PortableTextBlock[]; // Portable Text 格式
@@ -29,6 +31,7 @@ export interface PostMeta {
   slug: string;
   title: string;
   date: string;
+  language: string;
   description: string;
   tags: string[];
   readingTime: number;

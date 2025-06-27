@@ -22,6 +22,20 @@ export default defineType({
       validation: (Rule) => Rule.required()
     }),
     defineField({
+      name: 'language',
+      title: 'Language',
+      type: 'string',
+      options: {
+        list: [
+          { title: '中文', value: 'zh-CN' },
+          { title: 'English', value: 'en' }
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'zh-CN',
+      validation: (Rule) => Rule.required()
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',

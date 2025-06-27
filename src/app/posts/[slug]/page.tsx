@@ -1,9 +1,10 @@
 import { getPostBySlug, getAllPostSlugs } from '@/lib/posts';
 import { notFound } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
-import { zhCN } from 'date-fns/locale';
+import { zhCN, enUS } from 'date-fns/locale';
 import Link from 'next/link';
 import PortableText from '@/components/PortableText';
+import { getTranslations } from '@/lib/i18n';
 
 interface PostPageProps {
   params: Promise<{
@@ -42,9 +43,13 @@ export default async function PostPage({ params }: PostPageProps) {
     notFound();
   }
 
+  // 根据文章语言决定显示语言
+  const t = getTranslations(post.language as 'zh-CN' | 'en');
+  const locale = post.language === 'en' ? enUS : zhCN;
+  
   const relativeTime = formatDistanceToNow(new Date(post.date), { 
     addSuffix: true, 
-    locale: zhCN 
+    locale 
   });
 
   return (
@@ -61,7 +66,7 @@ export default async function PostPage({ params }: PostPageProps) {
             <span>•</span>
             <span>{relativeTime}</span>
             <span>•</span>
-            <span>⏱️ {post.readingTime} 分钟阅读</span>
+            <span>{t.post.readingTime(post.readingTime)}</span>
           </div>
 
           {/* Description */}
@@ -96,14 +101,14 @@ export default async function PostPage({ params }: PostPageProps) {
               href="/"
               className="text-blue-500 hover:text-pink-500 font-medium inline-flex items-center gap-2"
             >
-              ← 返回首页
+              {t.post.backToHome}
             </Link>
             
             <Link
               href="/"
               className="text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 font-medium inline-flex items-center gap-2"
             >
-              回到首页 →
+              {t.post.backToHome} →
             </Link>
           </div>
 

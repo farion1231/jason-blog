@@ -15,8 +15,7 @@ export const client = createClient({
 
 // 图片 URL 构建器
 const builder = imageUrlBuilder(client)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const urlFor = (source: any) => builder.image(source)
+export const urlFor = (source: Parameters<typeof builder.image>[0]) => builder.image(source)
 
 // GROQ 查询
 export const queries = {
@@ -25,6 +24,19 @@ export const queries = {
     _id,
     title,
     slug,
+    language,
+    description,
+    publishedAt,
+    tags,
+    "readingTime": round(length(pt::text(content)) / 5 / 250)
+  }`,
+  
+  // 根据语言获取文章
+  postsByLanguage: `*[_type == "post" && !isDraft && language == $language] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    language,
     description,
     publishedAt,
     tags,
@@ -36,6 +48,20 @@ export const queries = {
     _id,
     title,
     slug,
+    language,
+    description,
+    publishedAt,
+    tags,
+    content,
+    "readingTime": round(length(pt::text(content)) / 5 / 250)
+  }`,
+  
+  // 根据 slug 和语言获取文章
+  postBySlugAndLanguage: `*[_type == "post" && slug.current == $slug && language == $language && !isDraft][0] {
+    _id,
+    title,
+    slug,
+    language,
     description,
     publishedAt,
     tags,

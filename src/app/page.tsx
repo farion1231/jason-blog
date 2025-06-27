@@ -1,10 +1,16 @@
-import { getAllPosts } from '@/lib/posts';
+import { getPostsByLanguage } from '@/lib/posts';
 import { PostMeta } from '@/types/post';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
+import { getTranslations } from '@/lib/i18n';
+
+type DateLocale = typeof zhCN;
 
 export default async function Home() {
-  const posts = await getAllPosts();
+  // 默认显示中文文章
+  const posts = await getPostsByLanguage('zh-CN');
+  const dateLocale = zhCN;
+  const t = getTranslations('zh-CN');
 
   return (
     <>
@@ -13,10 +19,10 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center space-y-4 animate-fadeIn">
             <h1 className="text-4xl md:text-5xl font-bold">
-              <span className="bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">我的博客</span>
+              <span className="bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">{t.home.title}</span>
             </h1>
             <p className="text-lg text-gray-500 dark:text-gray-400">
-              共 {posts.length} 篇文章 • 持续更新中 🌱
+              {t.home.subtitle(posts.length)}
             </p>
           </div>
         </div>
@@ -29,16 +35,16 @@ export default async function Home() {
             <div className="text-center py-20">
               <div className="text-6xl mb-6">📝</div>
               <p className="text-xl text-gray-500 dark:text-gray-400">
-                还没有发布任何文章
+                {t.home.noPosts}
               </p>
               <p className="text-gray-400 dark:text-gray-500 mt-3">
-                敬请期待更多精彩内容...
+                {t.home.noPostsDesc}
               </p>
             </div>
           ) : (
             <div className="space-y-6 max-w-4xl mx-auto">
               {posts.map((post: PostMeta) => (
-                <PostCard key={post.slug} post={post} />
+                <PostCard key={post.slug} post={post} locale={dateLocale} t={t.home} />
               ))}
             </div>
           )}
@@ -48,10 +54,15 @@ export default async function Home() {
   );
 }
 
-function PostCard({ post }: { post: PostMeta }) {
+interface HomeTranslations {
+  readingTime: (time: number) => string;
+  readMore: string;
+}
+
+function PostCard({ post, locale, t }: { post: PostMeta; locale: DateLocale; t: HomeTranslations }) {
   const relativeTime = formatDistanceToNow(new Date(post.date), { 
     addSuffix: true, 
-    locale: zhCN 
+    locale 
   });
 
   return (
@@ -69,7 +80,7 @@ function PostCard({ post }: { post: PostMeta }) {
             <span>•</span>
             <span>{relativeTime}</span>
             <span>•</span>
-            <span>⏱️ {post.readingTime} 分钟阅读</span>
+            <span>{t.readingTime(post.readingTime)}</span>
           </div>
         </div>
 
@@ -96,7 +107,7 @@ function PostCard({ post }: { post: PostMeta }) {
             href={`/posts/${post.slug}`}
             className="text-blue-500 hover:text-pink-500 font-medium inline-flex items-center gap-2 ml-auto"
           >
-            阅读全文
+            {t.readMore}
             <span>→</span>
           </a>
         </div>

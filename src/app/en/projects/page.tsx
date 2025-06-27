@@ -1,7 +1,7 @@
 import { getTranslations } from '@/lib/i18n';
 
-export default function ProjectsPage() {
-  const t = getTranslations('zh-CN');
+export default function EnglishProjectsPage() {
+  const t = getTranslations('en');
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 dark:from-gray-900 to-transparent">

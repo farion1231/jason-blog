@@ -7,6 +7,7 @@ function sanityPostToPost(sanityPost: SanityPost): Post {
     slug: sanityPost.slug.current,
     title: sanityPost.title,
     date: sanityPost.publishedAt,
+    language: sanityPost.language,
     description: sanityPost.description || '',
     tags: sanityPost.tags || [],
     content: sanityPost.content || [], // 保持 portable text 格式
@@ -19,6 +20,7 @@ function sanityPostToPostMeta(sanityPost: SanityPost): PostMeta {
     slug: sanityPost.slug.current,
     title: sanityPost.title,
     date: sanityPost.publishedAt,
+    language: sanityPost.language,
     description: sanityPost.description || '',
     tags: sanityPost.tags || [],
     readingTime: sanityPost.readingTime || 1,
@@ -31,6 +33,16 @@ export async function getAllPosts(): Promise<PostMeta[]> {
     return posts.map(sanityPostToPostMeta);
   } catch (error) {
     console.error('Error fetching posts:', error);
+    return [];
+  }
+}
+
+export async function getPostsByLanguage(language: string): Promise<PostMeta[]> {
+  try {
+    const posts: SanityPost[] = await client.fetch(queries.postsByLanguage, { language });
+    return posts.map(sanityPostToPostMeta);
+  } catch (error) {
+    console.error(`Error fetching posts for language ${language}:`, error);
     return [];
   }
 }

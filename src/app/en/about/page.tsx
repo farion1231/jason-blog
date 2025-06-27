@@ -1,8 +1,8 @@
 import { getTranslations } from '@/lib/i18n';
 import { siteConfig } from '@/config/site';
 
-export default function AboutPage() {
-  const t = getTranslations('zh-CN');
+export default function EnglishAboutPage() {
+  const t = getTranslations('en');
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
