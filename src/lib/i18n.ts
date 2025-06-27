@@ -12,7 +12,7 @@ export const translations = {
     // 页脚
     footer: {
       slogan: '简洁 • 优雅 • 分享',
-      copyright: '© 2024 Jason\'s Blog. All rights reserved.',
+      copyright: '© 2025 Jason\'s Blog. All rights reserved.',
     },
     // 首页
     home: {
@@ -70,7 +70,7 @@ export const translations = {
     // 页脚
     footer: {
       slogan: 'Simple • Elegant • Share',
-      copyright: '© 2024 Jason\'s Blog. All rights reserved.',
+      copyright: '© 2025 Jason\'s Blog. All rights reserved.',
     },
     // 首页
     home: {

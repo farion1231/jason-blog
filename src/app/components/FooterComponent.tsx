@@ -11,12 +11,8 @@ export function FooterComponent() {
 
   return (
     <footer className="glass-subtle border-t mt-20">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="text-center space-y-4">
-          <p className="text-2xl">✨</p>
-          <p className="text-gray-600 dark:text-gray-300">
-            {t.footer.slogan}
-          </p>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {t.footer.copyright}
           </p>
