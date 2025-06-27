@@ -58,6 +58,24 @@ export const translations = {
       tags: '标签',
       readingTime: (time: number) => `${time} 分钟阅读`,
     },
+    // 错误页面
+    error: {
+      title: '出错了',
+      message: '遇到了意外错误，别担心，这不是你的问题！',
+      tryAgain: '重试',
+      goHome: '回到首页',
+      notFound: {
+        title: '页面未找到',
+        message: '你要找的页面不存在或已被移动。',
+        backToHome: '返回首页',
+      },
+      post: {
+        title: '文章加载失败',
+        message: '无法加载这篇文章，可能已被移动或删除。',
+        retry: '重试',
+        allPosts: '所有文章',
+      },
+    },
   },
   'en': {
     // 导航
@@ -115,6 +133,24 @@ export const translations = {
       publishedOn: 'Published on',
       tags: 'Tags',
       readingTime: (time: number) => `${time} min read`,
+    },
+    // 错误页面
+    error: {
+      title: 'Oops! Something went wrong',
+      message: 'We encountered an unexpected error. Don\'t worry, it\'s not your fault!',
+      tryAgain: 'Try again',
+      goHome: 'Go home',
+      notFound: {
+        title: 'Page not found',
+        message: 'The page you\'re looking for doesn\'t exist or has been moved.',
+        backToHome: 'Back to home',
+      },
+      post: {
+        title: 'Failed to load article',
+        message: 'We couldn\'t load this article. It might have been moved or deleted.',
+        retry: 'Retry',
+        allPosts: 'All posts',
+      },
     },
   },
 };
