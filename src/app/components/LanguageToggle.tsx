@@ -1,33 +1,38 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
+import { useState, useTransition } from 'react';
 
 export function LanguageToggle() {
   const router = useRouter();
   const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
   
-  // 检测当前语言
-  const isEnglish = pathname.startsWith('/en');
+  // 从路径中提取当前语言
+  const currentLocale = pathname.split('/')[1];
+  const isEnglish = currentLocale === 'en';
   
   const toggleLanguage = () => {
-    if (isEnglish) {
-      // 从英文切换到中文
-      const newPath = pathname.replace(/^\/en/, '') || '/';
+    const segments = pathname.split('/');
+    const newLocale = isEnglish ? 'zh-CN' : 'en';
+    
+    // 替换语言段
+    segments[1] = newLocale;
+    const newPath = segments.join('/');
+    
+    startTransition(() => {
       router.push(newPath);
-    } else {
-      // 从中文切换到英文
-      const newPath = `/en${pathname}`;
-      router.push(newPath);
-    }
+    });
   };
 
   return (
     <button
       onClick={toggleLanguage}
-      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+      disabled={isPending}
+      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50"
       aria-label={`Switch to ${isEnglish ? 'Chinese' : 'English'}`}
     >
-      <span className="text-lg">🌐</span>
+      <span className={`text-lg ${isPending ? 'animate-spin' : ''}`}>🌐</span>
       <span>{isEnglish ? '中文' : 'EN'}</span>
     </button>
   );

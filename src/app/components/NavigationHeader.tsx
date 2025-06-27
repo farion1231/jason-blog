@@ -5,20 +5,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
-import { detectLocale, getTranslations } from '@/lib/i18n';
+import { getTranslations } from '@/lib/i18n';
 
 export function NavigationHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const locale = detectLocale(pathname);
+  const currentLocale = pathname.split('/')[1] as 'zh-CN' | 'en';
+  const locale = ['zh-CN', 'en'].includes(currentLocale) ? currentLocale : 'zh-CN';
   const t = getTranslations(locale);
   
   // 获取对应语言的链接
   const getLocalizedPath = (path: string) => {
-    if (locale === 'en') {
-      return `/en${path}`;
-    }
-    return path;
+    return `/${locale}${path}`;
   };
 
   return (

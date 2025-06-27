@@ -1,11 +1,12 @@
 'use client';
 
 import { usePathname } from "next/navigation";
-import { detectLocale, getTranslations } from '@/lib/i18n';
+import { getTranslations, type Locale } from '@/lib/i18n';
 
 export function FooterComponent() {
   const pathname = usePathname();
-  const locale = detectLocale(pathname);
+  const currentLocale = pathname.split('/')[1] as Locale;
+  const locale = ['zh-CN', 'en'].includes(currentLocale) ? currentLocale : 'zh-CN';
   const t = getTranslations(locale);
 
   return (

@@ -16,22 +16,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="zh-CN">
-      <body className="font-sans">
-        <Providers>
-          <div className="min-h-screen flex flex-col">
-            <NavigationHeader />
-            
-            {/* Main Content */}
-            <main className="flex-1">
-              {children}
-            </main>
-            
-            <FooterComponent />
-          </div>
-        </Providers>
-      </body>
-    </html>
-  );
+  return children;
 }

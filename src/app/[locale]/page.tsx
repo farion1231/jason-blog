@@ -1,20 +1,20 @@
 import { getPostsByLanguage } from '@/lib/posts';
 import { PostMeta } from '@/types/post';
 import { formatDistanceToNow } from 'date-fns';
-import { enUS } from 'date-fns/locale';
-import { getTranslations } from '@/lib/i18n';
+import { zhCN, enUS } from 'date-fns/locale';
+import { getTranslations, type Locale } from '@/lib/i18n';
 
-type DateLocale = typeof enUS;
+type DateLocale = typeof zhCN | typeof enUS;
 
-interface HomeTranslations {
-  readingTime: (time: number) => string;
-  readMore: string;
+interface PageProps {
+  params: Promise<{ locale: Locale }>;
 }
 
-export default async function EnglishHome() {
-  const posts = await getPostsByLanguage('en');
-  const dateLocale = enUS;
-  const t = getTranslations('en');
+export default async function HomePage({ params }: PageProps) {
+  const { locale } = await params;
+  const posts = await getPostsByLanguage(locale === 'zh-CN' ? 'zh-CN' : 'en');
+  const dateLocale: DateLocale = locale === 'zh-CN' ? zhCN : enUS;
+  const t = getTranslations(locale);
 
   return (
     <>
@@ -48,7 +48,7 @@ export default async function EnglishHome() {
           ) : (
             <div className="space-y-6 max-w-4xl mx-auto">
               {posts.map((post: PostMeta) => (
-                <PostCard key={post.slug} post={post} locale={dateLocale} t={t.home} />
+                <PostCard key={post.slug} post={post} locale={locale} dateLocale={dateLocale} t={t.home} />
               ))}
             </div>
           )}
@@ -58,10 +58,25 @@ export default async function EnglishHome() {
   );
 }
 
-function PostCard({ post, locale, t }: { post: PostMeta; locale: DateLocale; t: HomeTranslations }) {
+interface HomeTranslations {
+  readingTime: (time: number) => string;
+  readMore: string;
+}
+
+function PostCard({ 
+  post, 
+  locale, 
+  dateLocale, 
+  t 
+}: { 
+  post: PostMeta; 
+  locale: Locale;
+  dateLocale: DateLocale; 
+  t: HomeTranslations;
+}) {
   const relativeTime = formatDistanceToNow(new Date(post.date), { 
     addSuffix: true, 
-    locale 
+    locale: dateLocale 
   });
 
   return (
@@ -70,7 +85,7 @@ function PostCard({ post, locale, t }: { post: PostMeta; locale: DateLocale; t: 
         {/* Title and Meta */}
         <div>
           <h2 className="text-2xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-blue-500 transition-colors">
-            <a href={`/posts/${post.slug}`}>
+            <a href={`/${locale}/posts/${post.slug}`}>
               {post.title}
             </a>
           </h2>
@@ -103,7 +118,7 @@ function PostCard({ post, locale, t }: { post: PostMeta; locale: DateLocale; t: 
           )}
           
           <a
-            href={`/posts/${post.slug}`}
+            href={`/${locale}/posts/${post.slug}`}
             className="text-blue-500 hover:text-pink-500 font-medium inline-flex items-center gap-2 ml-auto"
           >
             {t.readMore}
