@@ -1,5 +1,5 @@
 import { getTranslations, type Locale } from '@/lib/i18n';
-import { projects } from '@/data/projects';
+import { projects, type Project } from '@/data/projects';
 
 interface ProjectsPageProps {
   params: Promise<{ locale: Locale }>;
@@ -63,17 +63,6 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
   );
 }
 
-interface Project {
-  id: string;
-  title: { 'zh-CN': string; en: string };
-  description: { 'zh-CN': string; en: string };
-  tags: string[];
-  demo?: string;
-  github?: string;
-  image?: string;
-  status: 'completed' | 'in-progress' | 'planned';
-  featured?: boolean;
-}
 
 interface ProjectTranslations {
   demo: string;
@@ -141,9 +130,9 @@ function ProjectCard({
         )}
         
         <div className="flex gap-3 pt-2">
-          {project.demo && (
+          {project.demoUrl && (
             <a 
-              href={project.demo}
+              href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-blue-500 hover:text-pink-500 transition-colors"
@@ -152,9 +141,9 @@ function ProjectCard({
               {t.demo}
             </a>
           )}
-          {project.github && (
+          {project.githubUrl && (
             <a 
-              href={project.github}
+              href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-blue-500 hover:text-pink-500 transition-colors"

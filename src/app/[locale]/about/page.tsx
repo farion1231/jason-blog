@@ -1,4 +1,5 @@
 import { getTranslations, type Locale } from '@/lib/i18n';
+import { siteConfig } from '@/config/site';
 
 interface AboutPageProps {
   params: Promise<{ locale: Locale }>;
@@ -40,7 +41,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
             <div className="pt-8 border-t border-gray-200 dark:border-gray-700">
               <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">{t.about.skills}</h2>
               <div className="flex flex-wrap gap-3">
-                {['React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'TailwindCSS', 'PostgreSQL', 'Docker'].map((skill) => (
+                {siteConfig.author.skills.map((skill) => (
                   <span key={skill} className="px-4 py-2 bg-gradient-to-r from-blue-500/10 to-pink-500/10 text-gray-700 dark:text-gray-300 rounded-lg font-medium">
                     {skill}
                   </span>
@@ -52,9 +53,9 @@ export default async function AboutPage({ params }: AboutPageProps) {
             <div className="pt-8 border-t border-gray-200 dark:border-gray-700">
               <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">{t.about.contact}</h2>
               <div className="space-y-3">
-                <a href="mailto:jason@example.com" className="inline-flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                <a href={`mailto:${siteConfig.author.email}`} className="inline-flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
                   <span className="text-xl">✉️</span>
-                  <span>{t.about.email}: jason@example.com</span>
+                  <span>{t.about.email}: {siteConfig.author.email}</span>
                 </a>
               </div>
             </div>
