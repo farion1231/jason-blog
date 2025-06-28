@@ -27,6 +27,7 @@ export const translations = {
     footer: {
       slogan: '简洁 • 优雅 • 分享',
       copyright: '© 2025 Jason\'s Blog. All rights reserved.',
+      rss: 'RSS 订阅',
     },
     home: {
       title: '我的博客',
@@ -97,6 +98,7 @@ export const translations = {
     footer: {
       slogan: 'Simple • Elegant • Share',
       copyright: '© 2025 Jason\'s Blog. All rights reserved.',
+      rss: 'RSS Feed',
     },
     home: {
       title: 'My Blog',
