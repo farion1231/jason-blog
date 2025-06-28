@@ -25,27 +25,25 @@ export const client = createClient({
 const builder = imageUrlBuilder(client)
 export const urlFor = (source: Parameters<typeof builder.image>[0]) => builder.image(source)
 
-// 简化的错误处理函数
+// 简化的错误处理
 export async function handleSanityQuery<T>(
   queryFn: () => Promise<T>,
-  context: string,
   fallbackValue: T
 ): Promise<T> {
   try {
     return await queryFn();
   } catch (error) {
-    // 获取状态码
+    // 404 和 403 错误需要特殊处理，直接抛出
     const statusCode = error && typeof error === 'object' && 'statusCode' in error 
       ? (error as { statusCode: number }).statusCode 
       : undefined;
 
-    // 对于 404 和 403 错误，抛出给上层处理
     if (statusCode === 404 || statusCode === 403) {
       throw error;
     }
 
-    // 其他错误简单记录并返回降级值
-    console.error(`Sanity query failed - ${context}:`, error);
+    // 其他错误返回降级值，避免页面崩溃
+    console.error('Sanity query failed:', error);
     return fallbackValue;
   }
 }

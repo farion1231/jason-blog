@@ -33,7 +33,6 @@ export async function getAllPosts(): Promise<PostMeta[]> {
       const posts: SanityPost[] = await client.fetch(queries.allPosts);
       return posts.map(sanityPostToPostMeta);
     },
-    'getAllPosts',
     []
   );
 }
@@ -44,7 +43,6 @@ export async function getPostsByLanguage(language: string): Promise<PostMeta[]> 
       const posts: SanityPost[] = await client.fetch(queries.postsByLanguage, { language });
       return posts.map(sanityPostToPostMeta);
     },
-    `getPostsByLanguage(${language})`,
     []
   );
 }
@@ -54,18 +52,12 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     return await handleSanityQuery(
       async () => {
         const post: SanityPost = await client.fetch(queries.postBySlug, { slug });
-        
-        if (!post) {
-          return null;
-        }
-
-        return sanityPostToPost(post);
+        return post ? sanityPostToPost(post) : null;
       },
-      `getPostBySlug(${slug})`,
       null
     );
   } catch (error) {
-    // 如果是 404 错误，返回 null 触发 not-found 页面
+    // 404 错误返回 null 触发 not-found 页面
     const statusCode = error && typeof error === 'object' && 'statusCode' in error 
       ? (error as { statusCode: number }).statusCode 
       : undefined;
@@ -74,7 +66,6 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       return null;
     }
     
-    // 其他错误重新抛出
     throw error;
   }
 }
@@ -85,7 +76,6 @@ export async function getAllPostSlugs(): Promise<string[]> {
       const slugs: string[] = await client.fetch(queries.postSlugs);
       return slugs;
     },
-    'getAllPostSlugs',
     []
   );
 }
@@ -133,7 +123,6 @@ export async function getPostsByLanguagePaginated(
         totalPosts: result.total
       };
     },
-    `getPostsByLanguagePaginated(${language}, page=${page})`,
     fallbackResult
   );
 }
