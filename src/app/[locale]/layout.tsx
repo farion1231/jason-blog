@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
-import { NavigationHeader } from '../components/NavigationHeader';
-import { FooterComponent } from '../components/FooterComponent';
+import { NavigationHeader } from '@/components/layout/NavigationHeader';
+import { FooterComponent } from '@/components/layout/FooterComponent';
 import { Providers } from '../providers';
-import { locales } from '@/config/i18n';
+import { locales, type Locale } from '@/config/i18n';
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -11,7 +11,7 @@ export async function generateStaticParams() {
 
 interface LocaleLayoutProps {
   children: ReactNode;
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }
 
 export default async function LocaleLayout({

@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from "next/navigation";
-import { getTranslations, type Locale } from '@/lib/i18n';
+import { getTranslations, type Locale } from '@/config/i18n';
 
 export function FooterComponent() {
   const pathname = usePathname();

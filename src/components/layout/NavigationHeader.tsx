@@ -3,9 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ThemeToggle } from './ThemeToggle';
-import { LanguageToggle } from './LanguageToggle';
-import { getTranslations } from '@/lib/i18n';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { getTranslations } from '@/config/i18n';
 
 const navLinkClasses = {
   desktop: "text-gray-500 dark:text-gray-400 font-medium transition-colors relative hover:text-blue-500 after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full",
