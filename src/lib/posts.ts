@@ -1,4 +1,4 @@
-import { client, queries, handleSanityQuery, NetworkError, NetworkErrorType } from './sanity';
+import { client, queries, handleSanityQuery } from './sanity';
 import { Post, PostMeta, SanityPost } from '@/types/post';
 
 // 将 Sanity 数据转换为前端使用的格式
@@ -65,17 +65,17 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       null
     );
   } catch (error) {
-    // 如果是网络错误类型，检查是否为 404
-    if (error && typeof error === 'object' && 'type' in error) {
-      const networkError = error as NetworkError;
-      if (networkError.type === NetworkErrorType.NOT_FOUND) {
-        return null; // 404 错误返回 null，触发 not-found 页面
-      }
-      // 其他网络错误重新抛出
-      throw networkError;
+    // 如果是 404 错误，返回 null 触发 not-found 页面
+    const statusCode = error && typeof error === 'object' && 'statusCode' in error 
+      ? (error as { statusCode: number }).statusCode 
+      : undefined;
+    
+    if (statusCode === 404) {
+      return null;
     }
-    // 未知错误也返回 null
-    return null;
+    
+    // 其他错误重新抛出
+    throw error;
   }
 }
 
