@@ -1,12 +1,5 @@
-import LoadingSpinner from '@/components/LoadingSpinner';
+import Loading from '@/components/common/Loading';
 
-export default function Loading() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh]">
-      <LoadingSpinner />
-      <p className="mt-4 text-gray-600 dark:text-gray-400 animate-pulse">
-        Loading...
-      </p>
-    </div>
-  );
+export default function LocaleLoading() {
+  return <Loading text="正在加载内容..." />;
 }
