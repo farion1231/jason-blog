@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { detectLocaleFromUrl } from '@/lib/detectLocale';
-import { getTranslations, type Locale } from '@/lib/i18n';
+import { getTranslations, type Locale } from '@/config/i18n';
 
 export default function RootError({
   error,

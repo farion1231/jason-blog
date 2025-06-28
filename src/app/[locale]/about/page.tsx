@@ -1,4 +1,4 @@
-import { getTranslations, type Locale } from '@/lib/i18n';
+import { getTranslations, type Locale } from '@/config/i18n';
 import { siteConfig } from '@/config/site';
 
 interface AboutPageProps {

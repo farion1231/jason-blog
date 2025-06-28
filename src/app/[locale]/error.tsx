@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { getTranslations, type Locale } from '@/lib/i18n';
+import { getTranslations, type Locale } from '@/config/i18n';
 
 export default function Error({
   error,

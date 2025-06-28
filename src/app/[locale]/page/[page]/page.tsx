@@ -3,8 +3,8 @@ import { getPostsByLanguagePaginated } from '@/lib/posts';
 import { PostMeta } from '@/types/post';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN, enUS } from 'date-fns/locale';
-import { getTranslations, type Locale } from '@/lib/i18n';
-import Pagination from '@/components/Pagination';
+import { getTranslations, type Locale } from '@/config/i18n';
+import Pagination from '@/components/common/Pagination';
 
 type DateLocale = typeof zhCN | typeof enUS;
 

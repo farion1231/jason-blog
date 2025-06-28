@@ -1,4 +1,4 @@
-import { getTranslations, type Locale } from '@/lib/i18n';
+import { getTranslations, type Locale } from '@/config/i18n';
 import { projects, type Project } from '@/data/projects';
 import Image from 'next/image';
 

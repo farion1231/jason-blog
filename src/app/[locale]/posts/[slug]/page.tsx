@@ -3,8 +3,8 @@ import { notFound } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN, enUS } from 'date-fns/locale';
 import Link from 'next/link';
-import PortableText from '@/components/PortableText';
-import { getTranslations, type Locale } from '@/lib/i18n';
+import PortableText from '@/components/post/PortableText';
+import { getTranslations, type Locale } from '@/config/i18n';
 import { generatePageMetadata } from '@/lib/metadata';
 
 interface PostPageProps {

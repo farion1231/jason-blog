@@ -1,4 +1,4 @@
-import { type Locale } from './i18n';
+import { type Locale } from '@/config/i18n';
 
 export function detectLocaleFromUrl(): Locale {
   if (typeof window === 'undefined') {
