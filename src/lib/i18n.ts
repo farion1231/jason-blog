@@ -18,6 +18,7 @@ export const translations = {
     home: {
       title: '我的博客',
       subtitle: (count: number) => `共 ${count} 篇文章 • 持续更新中 🌱`,
+      metaDescription: 'Jason 的个人博客，分享技术文章、项目经验和学习心得',
       noPosts: '还没有发布任何文章',
       noPostsDesc: '敬请期待更多精彩内容...',
       readMore: '阅读全文',
@@ -94,6 +95,7 @@ export const translations = {
     home: {
       title: 'My Blog',
       subtitle: (count: number) => `${count} articles • Continuously updating 🌱`,
+      metaDescription: 'Jason\'s personal blog sharing tech articles, project experiences and learning insights',
       noPosts: 'No articles published yet',
       noPostsDesc: 'Stay tuned for more exciting content...',
       readMore: 'Read More',

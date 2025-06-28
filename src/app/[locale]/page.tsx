@@ -3,12 +3,25 @@ import { PostMeta } from '@/types/post';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN, enUS } from 'date-fns/locale';
 import { getTranslations, type Locale } from '@/lib/i18n';
+import { generatePageMetadata } from '@/lib/metadata';
 import Pagination from '@/components/Pagination';
 
 type DateLocale = typeof zhCN | typeof enUS;
 
 interface PageProps {
   params: Promise<{ locale: Locale }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { locale } = await params;
+  const t = getTranslations(locale);
+  
+  return generatePageMetadata(
+    locale,
+    'Jason Blog',
+    t.home.metaDescription,
+    ''
+  );
 }
 
 export default async function HomePage({ params }: PageProps) {

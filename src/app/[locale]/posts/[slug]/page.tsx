@@ -5,6 +5,7 @@ import { zhCN, enUS } from 'date-fns/locale';
 import Link from 'next/link';
 import PortableText from '@/components/PortableText';
 import { getTranslations, type Locale } from '@/lib/i18n';
+import { generatePageMetadata } from '@/lib/metadata';
 
 interface PostPageProps {
   params: Promise<{
@@ -26,7 +27,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PostPageProps) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const post = await getPostBySlug(slug);
   
   if (!post) {
@@ -35,10 +36,12 @@ export async function generateMetadata({ params }: PostPageProps) {
     };
   }
 
-  return {
-    title: `${post.title} | Jason's Blog`,
-    description: post.description,
-  };
+  return generatePageMetadata(
+    locale,
+    `${post.title} | Jason's Blog`,
+    post.description,
+    `/posts/${slug}`
+  );
 }
 
 export default async function PostPage({ params }: PostPageProps) {

@@ -3,8 +3,7 @@ import { notFound } from 'next/navigation';
 import { NavigationHeader } from '../components/NavigationHeader';
 import { FooterComponent } from '../components/FooterComponent';
 import { Providers } from '../providers';
-
-const locales = ['zh-CN', 'en'];
+import { locales } from '@/config/i18n';
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
