@@ -1,13 +1,9 @@
 'use client';
 
-import { usePathname } from "next/navigation";
-import { getTranslations, type Locale } from '@/config/i18n';
+import { useTranslations } from '@/hooks/useTranslations';
 
 export function FooterComponent() {
-  const pathname = usePathname();
-  const currentLocale = pathname.split('/')[1] as Locale;
-  const locale = ['zh-CN', 'en'].includes(currentLocale) ? currentLocale : 'zh-CN';
-  const t = getTranslations(locale);
+  const t = useTranslations();
 
   return (
     <footer className="glass-subtle border-t mt-20">

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
-import { getTranslations } from '@/config/i18n';
+import { useTranslations } from '@/hooks/useTranslations';
 
 const navLinkClasses = {
   desktop: "text-gray-500 dark:text-gray-400 font-medium transition-colors relative hover:text-blue-500 after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full",
@@ -17,7 +17,7 @@ export function NavigationHeader() {
   const pathname = usePathname();
   const currentLocale = pathname.split('/')[1] as 'zh-CN' | 'en';
   const locale = ['zh-CN', 'en'].includes(currentLocale) ? currentLocale : 'zh-CN';
-  const t = getTranslations(locale);
+  const t = useTranslations();
   
   // 获取对应语言的链接
   const getLocalizedPath = (path: string) => {
