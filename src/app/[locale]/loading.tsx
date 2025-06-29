@@ -1,5 +1,5 @@
-import Loading from '@/components/common/Loading';
+import SmartLoading from '@/components/common/SmartLoading';
 
-export default function LocaleLoading() {
-  return <Loading text="正在加载内容..." />;
+export default function Loading() {
+  return <SmartLoading />;
 }

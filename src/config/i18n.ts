@@ -70,6 +70,13 @@ export const translations = {
       tags: '标签',
       readingTime: (time: number) => `${time} 分钟阅读`,
     },
+    loading: {
+      default: '正在加载...',
+      posts: '正在加载文章列表...',
+      post: '正在加载文章内容...',
+      about: '正在加载关于页面...',
+      projects: '正在加载项目列表...',
+    },
     error: {
       title: '出错了',
       message: '遇到了意外错误，别担心，这不是你的问题！',
@@ -140,6 +147,13 @@ export const translations = {
       publishedOn: 'Published on',
       tags: 'Tags',
       readingTime: (time: number) => `${time} min read`,
+    },
+    loading: {
+      default: 'Loading...',
+      posts: 'Loading posts...',
+      post: 'Loading article...',
+      about: 'Loading about page...',
+      projects: 'Loading projects...',
     },
     error: {
       title: 'Oops! Something went wrong',
