@@ -1,5 +1,6 @@
-import { client, queries, handleSanityQuery } from './sanity';
 import { Post, PostMeta, SanityPost } from '@/types/post';
+import { queries } from '@/sanity/lib/queries';
+import { sanityFetch, sanityFetchWithFallback, SanityError } from '@/sanity/lib/fetch';
 
 // 将 Sanity 数据转换为前端使用的格式
 function sanityPostToPost(sanityPost: SanityPost): Post {
@@ -28,54 +29,43 @@ function sanityPostToPostMeta(sanityPost: SanityPost): PostMeta {
 }
 
 export async function getAllPosts(): Promise<PostMeta[]> {
-  return handleSanityQuery(
-    async () => {
-      const posts: SanityPost[] = await client.fetch(queries.allPosts);
-      return posts.map(sanityPostToPostMeta);
-    },
+  const posts = await sanityFetchWithFallback<SanityPost[]>(
+    queries.allPosts,
+    undefined,
     []
   );
+  return posts.map(sanityPostToPostMeta);
 }
 
 export async function getPostsByLanguage(language: string): Promise<PostMeta[]> {
-  return handleSanityQuery(
-    async () => {
-      const posts: SanityPost[] = await client.fetch(queries.postsByLanguage, { language });
-      return posts.map(sanityPostToPostMeta);
-    },
+  const posts = await sanityFetchWithFallback<SanityPost[]>(
+    queries.postsByLanguage,
+    { language },
     []
   );
+  return posts.map(sanityPostToPostMeta);
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   try {
-    return await handleSanityQuery(
-      async () => {
-        const post: SanityPost = await client.fetch(queries.postBySlug, { slug });
-        return post ? sanityPostToPost(post) : null;
-      },
-      null
+    const post = await sanityFetch<SanityPost | null>(
+      queries.postBySlug,
+      { slug }
     );
+    return post ? sanityPostToPost(post) : null;
   } catch (error) {
     // 404 错误返回 null 触发 not-found 页面
-    const statusCode = error && typeof error === 'object' && 'statusCode' in error 
-      ? (error as { statusCode: number }).statusCode 
-      : undefined;
-    
-    if (statusCode === 404) {
+    if (error instanceof SanityError && error.statusCode === 404) {
       return null;
     }
-    
     throw error;
   }
 }
 
 export async function getAllPostSlugs(): Promise<string[]> {
-  return handleSanityQuery(
-    async () => {
-      const slugs: string[] = await client.fetch(queries.postSlugs);
-      return slugs;
-    },
+  return await sanityFetchWithFallback<string[]>(
+    queries.postSlugs,
+    undefined,
     []
   );
 }
@@ -93,36 +83,25 @@ export async function getPostsByLanguagePaginated(
   language: string,
   page: number = 1
 ): Promise<PaginatedPosts> {
-  const fallbackResult: PaginatedPosts = {
-    posts: [],
-    totalPages: 0,
-    currentPage: page,
-    totalPosts: 0
-  };
-
-  return handleSanityQuery(
-    async () => {
-      const start = (page - 1) * POSTS_PER_PAGE;
-      const end = start + POSTS_PER_PAGE;
-      
-      const result: {
-        items: SanityPost[];
-        total: number;
-      } = await client.fetch(queries.postsByLanguagePaginated, {
-        language,
-        start,
-        end
-      });
-      
-      const totalPages = Math.ceil(result.total / POSTS_PER_PAGE);
-      
-      return {
-        posts: result.items.map(sanityPostToPostMeta),
-        totalPages,
-        currentPage: page,
-        totalPosts: result.total
-      };
-    },
-    fallbackResult
+  const start = (page - 1) * POSTS_PER_PAGE;
+  const end = start + POSTS_PER_PAGE;
+  
+  
+  const result = await sanityFetchWithFallback<{
+    items: SanityPost[];
+    total: number;
+  }>(
+    queries.postsByLanguagePaginated,
+    { language, start, end },
+    { items: [], total: 0 }
   );
+  
+  const totalPages = Math.ceil(result.total / POSTS_PER_PAGE);
+  
+  return {
+    posts: result.items.map(sanityPostToPostMeta),
+    totalPages,
+    currentPage: page,
+    totalPosts: result.total
+  };
 }

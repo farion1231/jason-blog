@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { urlFor } from '@/lib/sanity';
+import { urlFor } from '@/sanity/lib/image';
 
 interface PortableTextImageProps {
   value: {
