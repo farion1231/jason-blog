@@ -4,7 +4,7 @@ import { zhCN, enUS } from 'date-fns/locale';
 import { getTranslations, type Locale } from '@/config/i18n';
 import { generatePageMetadata } from '@/lib/metadata';
 import Pagination from '@/components/common/Pagination';
-import PostCard from '@/components/PostCard';
+import PostCard from '@/components/post/PostCard';
 
 type DateLocale = typeof zhCN | typeof enUS;
 

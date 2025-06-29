@@ -165,7 +165,7 @@ export default defineType({
       isDraft: 'isDraft'
     },
     prepare(selection) {
-      const { title, subtitle, publishedAt, language, isDraft } = selection
+      const { title, publishedAt, language, isDraft } = selection
       const status = isDraft ? '🔒 Draft' : '✅ Published'
       return {
         title: title || 'Untitled',

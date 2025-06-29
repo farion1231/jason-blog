@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { AlertCircle, Home, FileQuestion, RefreshCw } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
-import { styles } from '@/styles/constants';
+import { styles } from '@/config/styles';
 
 interface ErrorLayoutProps {
   type: 'error' | 'not-found' | 'post-error';
