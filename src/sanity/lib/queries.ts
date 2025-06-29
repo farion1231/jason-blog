@@ -4,7 +4,7 @@ import { groq } from 'next-sanity'
 const postFields = groq`
   _id,
   title,
-  "slug": slug.current,
+  slug,
   language,
   description,
   publishedAt,
@@ -20,12 +20,12 @@ const postFieldsWithContent = groq`
 // GROQ 查询定义
 export const queries = {
   // 获取所有已发布的文章
-  allPosts: groq`*[_type == "post" && !isDraft] | order(publishedAt desc) {
+  allPosts: groq`*[_type == "post" && !isDraft && defined(slug.current)] | order(publishedAt desc) {
     ${postFields}
   }`,
   
   // 根据语言获取文章
-  postsByLanguage: groq`*[_type == "post" && !isDraft && language == $language] | order(publishedAt desc) {
+  postsByLanguage: groq`*[_type == "post" && !isDraft && language == $language && defined(slug.current)] | order(publishedAt desc) {
     ${postFields}
   }`,
   
@@ -35,21 +35,21 @@ export const queries = {
   }`,
   
   // 根据 slug 和语言获取文章
-  postBySlugAndLanguage: groq`*[_type == "post" && slug.current == $slug && language == $language && !isDraft][0] {
+  postBySlugAndLanguage: groq`*[_type == "post" && slug.current == $slug && language == $language && !isDraft && defined(slug.current)][0] {
     ${postFieldsWithContent}
   }`,
   
   // 获取所有文章的 slug（用于生成静态路径）
-  postSlugs: groq`*[_type == "post" && !isDraft].slug.current`,
+  postSlugs: groq`*[_type == "post" && !isDraft && defined(slug.current)].slug.current`,
   
   // 分页查询：根据语言获取文章
   postsByLanguagePaginated: groq`{
-    "items": *[_type == "post" && !isDraft && language == $language] | order(publishedAt desc)[$start...$end] {
+    "items": *[_type == "post" && !isDraft && language == $language && defined(slug.current)] | order(publishedAt desc)[$start...$end] {
       ${postFields}
     },
-    "total": count(*[_type == "post" && !isDraft && language == $language])
+    "total": count(*[_type == "post" && !isDraft && language == $language && defined(slug.current)])
   }`,
   
   // 获取文章总数
-  postCountByLanguage: groq`count(*[_type == "post" && !isDraft && language == $language])`
+  postCountByLanguage: groq`count(*[_type == "post" && !isDraft && language == $language && defined(slug.current)])`
 }

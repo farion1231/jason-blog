@@ -4,6 +4,12 @@ import { sanityFetch, sanityFetchWithFallback, SanityError } from '@/sanity/lib/
 
 // 将 Sanity 数据转换为前端使用的格式
 function sanityPostToPost(sanityPost: SanityPost): Post {
+  // 数据验证
+  if (!sanityPost.slug?.current) {
+    console.error('Post missing slug:', sanityPost);
+    throw new Error(`Post "${sanityPost.title}" is missing a slug`);
+  }
+  
   return {
     slug: sanityPost.slug.current,
     title: sanityPost.title,
@@ -17,6 +23,12 @@ function sanityPostToPost(sanityPost: SanityPost): Post {
 }
 
 function sanityPostToPostMeta(sanityPost: SanityPost): PostMeta {
+  // 数据验证
+  if (!sanityPost.slug?.current) {
+    console.error('PostMeta missing slug:', sanityPost);
+    throw new Error(`Post "${sanityPost.title}" is missing a slug`);
+  }
+  
   return {
     slug: sanityPost.slug.current,
     title: sanityPost.title,
