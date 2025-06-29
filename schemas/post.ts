@@ -94,29 +94,44 @@ export default defineType({
           }
         },
         {
-          type: 'code',
-          options: {
-            language: {
-              list: [
-                { title: 'JavaScript', value: 'javascript' },
-                { title: 'TypeScript', value: 'typescript' },
-                { title: 'JSX', value: 'jsx' },
-                { title: 'TSX', value: 'tsx' },
-                { title: 'HTML', value: 'html' },
-                { title: 'CSS', value: 'css' },
-                { title: 'SCSS', value: 'scss' },
-                { title: 'JSON', value: 'json' },
-                { title: 'Markdown', value: 'markdown' },
-                { title: 'Bash', value: 'bash' },
-                { title: 'Python', value: 'python' },
-                { title: 'Java', value: 'java' },
-                { title: 'C++', value: 'cpp' },
-                { title: 'SQL', value: 'sql' },
-                { title: 'YAML', value: 'yaml' },
-                { title: 'Plain Text', value: 'text' }
-              ]
+          type: 'object',
+          name: 'codeBlock',
+          title: 'Code Block',
+          fields: [
+            {
+              name: 'language',
+              title: 'Language',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'JavaScript', value: 'javascript' },
+                  { title: 'TypeScript', value: 'typescript' },
+                  { title: 'JSX', value: 'jsx' },
+                  { title: 'TSX', value: 'tsx' },
+                  { title: 'HTML', value: 'html' },
+                  { title: 'CSS', value: 'css' },
+                  { title: 'JSON', value: 'json' },
+                  { title: 'Bash', value: 'bash' },
+                  { title: 'Python', value: 'python' }
+                ]
+              }
             },
-            withFilename: true
+            {
+              name: 'code',
+              title: 'Code',
+              type: 'text'
+            },
+            {
+              name: 'filename',
+              title: 'Filename',
+              type: 'string'
+            }
+          ],
+          preview: {
+            select: {
+              title: 'filename',
+              subtitle: 'language'
+            }
           }
         },
         {
@@ -145,7 +160,17 @@ export default defineType({
     select: {
       title: 'title',
       subtitle: 'description',
-      media: 'content'
+      publishedAt: 'publishedAt',
+      language: 'language',
+      isDraft: 'isDraft'
+    },
+    prepare(selection) {
+      const { title, subtitle, publishedAt, language, isDraft } = selection
+      const status = isDraft ? '🔒 Draft' : '✅ Published'
+      return {
+        title: title || 'Untitled',
+        subtitle: `${status} • ${language === 'zh-CN' ? '中文' : 'English'} • ${publishedAt ? new Date(publishedAt).toLocaleDateString() : 'No date'}`
+      }
     }
   },
   orderings: [

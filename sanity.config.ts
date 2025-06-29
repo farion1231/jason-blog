@@ -1,25 +1,28 @@
-import { defineConfig } from 'sanity'
-import { structureTool } from 'sanity/structure'
-import { visionTool } from '@sanity/vision'
-import { schemaTypes } from './schemas'
+'use client'
 
-// 你需要替换这些值
-const projectId = 'your-project-id' // 从 sanity.io 获取
-const dataset = 'production'
+/**
+ * This configuration is used to for the Sanity Studio that’s mounted on the `/app/studio/[[...tool]]/page.tsx` route
+ */
+
+import {visionTool} from '@sanity/vision'
+import {defineConfig} from 'sanity'
+import {structureTool} from 'sanity/structure'
+
+// Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
+import {apiVersion, dataset, projectId} from './src/sanity/env'
+import {schema} from './src/sanity/schemaTypes'
+import {structure} from './src/sanity/structure'
 
 export default defineConfig({
-  name: 'jason-blog',
-  title: 'Jason Blog',
-  
+  basePath: '/studio',
   projectId,
   dataset,
-  
+  // Add and edit the content schema in the './sanity/schemaTypes' folder
+  schema,
   plugins: [
-    structureTool(),
-    visionTool()
+    structureTool({structure}),
+    // Vision is for querying with GROQ from inside the Studio
+    // https://www.sanity.io/docs/the-vision-plugin
+    visionTool({defaultApiVersion: apiVersion}),
   ],
-  
-  schema: {
-    types: schemaTypes
-  }
 })
