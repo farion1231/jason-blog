@@ -78,3 +78,62 @@ export async function sanityFetchWithFallback<T>(
     throw error
   }
 }
+
+// 搜索相关的服务函数
+export async function searchPosts(
+  searchQuery: string,
+  language: string,
+  options?: {
+    cache?: RequestCache
+    next?: { revalidate?: number | false; tags?: string[] }
+  }
+) {
+  const { queries } = await import('./queries')
+  return sanityFetch(queries.searchPosts, { searchQuery, language }, options)
+}
+
+export async function getSearchSuggestions(
+  searchQuery: string,
+  language: string,
+  options?: {
+    cache?: RequestCache
+    next?: { revalidate?: number | false; tags?: string[] }
+  }
+) {
+  const { queries } = await import('./queries')
+  return sanityFetch(queries.searchSuggestions, { searchQuery, language }, options)
+}
+
+export async function getAllTags(
+  language: string,
+  options?: {
+    cache?: RequestCache
+    next?: { revalidate?: number | false; tags?: string[] }
+  }
+) {
+  const { queries } = await import('./queries')
+  return sanityFetch<string[]>(queries.allTags, { language }, options)
+}
+
+export async function getPostsByTag(
+  tag: string,
+  language: string,
+  options?: {
+    cache?: RequestCache
+    next?: { revalidate?: number | false; tags?: string[] }
+  }
+) {
+  const { queries } = await import('./queries')
+  return sanityFetch(queries.postsByTag, { tag, language }, options)
+}
+
+export async function getPostsByYear(
+  language: string,
+  options?: {
+    cache?: RequestCache
+    next?: { revalidate?: number | false; tags?: string[] }
+  }
+) {
+  const { queries } = await import('./queries')
+  return sanityFetch(queries.postsByYear, { language }, options)
+}

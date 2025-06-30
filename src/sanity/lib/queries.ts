@@ -51,5 +51,51 @@ export const queries = {
   }`,
   
   // 获取文章总数
-  postCountByLanguage: groq`count(*[_type == "post" && !isDraft && language == $language && defined(slug.current)])`
+  postCountByLanguage: groq`count(*[_type == "post" && !isDraft && language == $language && defined(slug.current)])`,
+  
+  // 搜索文章
+  searchPosts: groq`*[_type == "post" && !isDraft && language == $language && defined(slug.current) && (
+    title match $searchQuery + "*" ||
+    description match $searchQuery + "*" ||
+    pt::text(content) match $searchQuery + "*" ||
+    $searchQuery in tags
+  )] | order(_score desc, publishedAt desc) {
+    ${postFields},
+    "highlights": {
+      "title": title,
+      "description": description,
+      "content": pt::text(content)[0..200] + "..."
+    }
+  }`,
+  
+  // 获取搜索建议（基于标题）
+  searchSuggestions: groq`*[_type == "post" && !isDraft && language == $language && defined(slug.current) && title match $searchQuery + "*"] | order(_score desc) [0...5] {
+    title,
+    slug
+  }`,
+  
+  // 获取所有标签
+  allTags: groq`*[_type == "post" && !isDraft && language == $language && defined(slug.current)].tags[] | order() | array::unique()`,
+  
+  // 根据标签获取文章
+  postsByTag: groq`*[_type == "post" && !isDraft && language == $language && $tag in tags && defined(slug.current)] | order(publishedAt desc) {
+    ${postFields}
+  }`,
+  
+  // 按年份归档
+  postsByYear: groq`{
+    "years": *[_type == "post" && !isDraft && language == $language && defined(slug.current)] | order(publishedAt desc) {
+      "year": dateTime(publishedAt) | split("-")[0],
+      "month": dateTime(publishedAt) | split("-")[1],
+      ${postFields}
+    } | group(year) | order(key desc) {
+      "year": key,
+      "months": items | group(month) | order(key desc) {
+        "month": key,
+        "posts": items {
+          ${postFields}
+        }
+      }
+    }
+  }`
 }
