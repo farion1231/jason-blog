@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { SearchBox } from '@/components/ui/SearchBox';
 import { useTranslations } from '@/hooks/useTranslations';
 
 const navLinkClasses = {
@@ -35,8 +36,11 @@ export function NavigationHeader() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             <Link href={getLocalizedPath('/')} className={navLinkClasses.desktop}>{t.nav.home}</Link>
+            <Link href={getLocalizedPath('/archive')} className={navLinkClasses.desktop}>{t.nav.archive || (locale === 'zh-CN' ? '归档' : 'Archive')}</Link>
+            <Link href={getLocalizedPath('/tags')} className={navLinkClasses.desktop}>{t.nav.tags || (locale === 'zh-CN' ? '标签' : 'Tags')}</Link>
             <Link href={getLocalizedPath('/projects')} className={navLinkClasses.desktop}>{t.nav.projects}</Link>
             <Link href={getLocalizedPath('/about')} className={navLinkClasses.desktop}>{t.nav.about}</Link>
+            <SearchBox />
             <LanguageToggle />
             <ThemeToggle />
           </div>
@@ -64,12 +68,29 @@ export function NavigationHeader() {
         {mobileMenuOpen && (
           <div className="md:hidden glass-strong border-t py-4">
             <div className="flex flex-col space-y-4">
+              <div className="px-2">
+                <SearchBox />
+              </div>
               <Link 
                 href={getLocalizedPath('/')} 
                 className={navLinkClasses.mobile}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t.nav.home}
+              </Link>
+              <Link 
+                href={getLocalizedPath('/archive')} 
+                className={navLinkClasses.mobile}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t.nav.archive || (locale === 'zh-CN' ? '归档' : 'Archive')}
+              </Link>
+              <Link 
+                href={getLocalizedPath('/tags')} 
+                className={navLinkClasses.mobile}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t.nav.tags || (locale === 'zh-CN' ? '标签' : 'Tags')}
               </Link>
               <Link 
                 href={getLocalizedPath('/projects')} 
