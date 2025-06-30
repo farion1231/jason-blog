@@ -98,7 +98,6 @@ export async function getPostsByLanguagePaginated(
   const start = (page - 1) * POSTS_PER_PAGE;
   const end = start + POSTS_PER_PAGE;
   
-  
   const result = await sanityFetchWithFallback<{
     items: SanityPost[];
     total: number;
