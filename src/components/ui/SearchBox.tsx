@@ -219,20 +219,20 @@ export function SearchBox() {
       setIsOpen(false)
       inputRef.current?.blur()
     }
-  }, [suggestions, selectedIndex, query])
+  }, [suggestions, selectedIndex, query, navigateToPost, navigateToSearch])
 
-  const navigateToPost = (slug: string) => {
+  const navigateToPost = useCallback((slug: string) => {
     router.push(`/${locale}/posts/${slug}`)
     setIsOpen(false)
     setQuery('')
-  }
+  }, [router, locale])
 
-  const navigateToSearch = () => {
+  const navigateToSearch = useCallback(() => {
     if (query.trim()) {
       router.push(`/${locale}/search?q=${encodeURIComponent(query.trim())}`)
       setIsOpen(false)
     }
-  }
+  }, [router, locale, query])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

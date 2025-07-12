@@ -44,7 +44,7 @@ export function DropdownTrigger({ children, asChild }: { children: React.ReactNo
   }
   
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children as React.ReactElement<any>, {
+    return React.cloneElement(children as React.ReactElement<React.HTMLAttributes<HTMLElement>>, {
       onClick: handleClick,
       'aria-expanded': open,
       'aria-haspopup': true,
@@ -88,7 +88,7 @@ interface DropdownContentProps
     VariantProps<typeof dropdownContentVariants> {}
 
 export const DropdownContent = React.forwardRef<HTMLDivElement, DropdownContentProps>(
-  ({ className, align, side, ...props }, ref) => {
+  ({ className, align, side, ...props }) => {
     const { open, onOpenChange } = React.useContext(DropdownContext)
     const contentRef = React.useRef<HTMLDivElement>(null)
     

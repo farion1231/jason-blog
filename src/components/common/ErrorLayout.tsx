@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { AlertCircle, Home, FileQuestion, RefreshCw } from 'lucide-react';
+import { AlertCircle, Home, FileQuestion, RefreshCw, Bug } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
-import { styles } from '@/config/styles';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 interface ErrorLayoutProps {
   type: 'error' | 'not-found' | 'post-error';
@@ -22,98 +24,98 @@ export default function ErrorLayout({ type, error, reset }: ErrorLayoutProps) {
     switch (type) {
       case 'not-found':
         return {
-          icon: <FileQuestion className={`${styles.error.icon} text-gray-300`} />,
+          icon: FileQuestion,
+          iconColor: 'text-gray-400',
           title: t.error.notFound.title,
           message: t.error.notFound.message,
-          actions: (
-            <Link
-              href={`/${locale}`}
-              className={styles.button.primary}
-            >
-              <Home className="h-5 w-5" />
-              {t.error.notFound.backToHome}
-            </Link>
-          )
+          gradient: 'from-gray-500 to-gray-600'
         };
       case 'post-error':
         return {
-          icon: <AlertCircle className={`${styles.error.icon} text-red-300`} />,
+          icon: AlertCircle,
+          iconColor: 'text-red-400',
           title: t.error.post.title,
           message: t.error.post.message,
-          actions: (
-            <div className="flex flex-col sm:flex-row gap-4">
-              {reset && (
-                <button
-                  onClick={reset}
-                  className={styles.button.primary}
-                >
-                  <RefreshCw className="h-5 w-5" />
-                  {t.error.post.retry}
-                </button>
-              )}
-              <Link
-                href={`/${locale}`}
-                className={styles.button.secondary}
-              >
-                <Home className="h-5 w-5" />
-                {t.error.post.allPosts}
-              </Link>
-            </div>
-          )
+          gradient: 'from-red-500 to-pink-500'
         };
       default: // 'error'
         return {
-          icon: <AlertCircle className={`${styles.error.icon} text-yellow-400`} />,
+          icon: AlertCircle,
+          iconColor: 'text-yellow-400',
           title: t.error.title,
           message: t.error.message,
-          actions: (
-            <div className="flex flex-col sm:flex-row gap-4">
-              {reset && (
-                <button
-                  onClick={reset}
-                  className={styles.button.primary}
-                >
-                  <RefreshCw className="h-5 w-5" />
-                  {t.error.tryAgain}
-                </button>
-              )}
-              <Link
-                href={`/${locale}`}
-                className={styles.button.secondary}
-              >
-                <Home className="h-5 w-5" />
-                {t.error.goHome}
-              </Link>
-            </div>
-          )
+          gradient: 'from-yellow-500 to-orange-500'
         };
     }
   };
   
   const config = getConfig();
+  const Icon = config.icon;
   
   return (
-    <div className={styles.error.container}>
-      <div className={styles.error.wrapper}>
-        {config.icon}
-        <h1 className={styles.error.title}>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background to-muted/20">
+      <Card className="max-w-lg w-full p-8 text-center space-y-6 shadow-xl">
+        {/* Icon with gradient background */}
+        <div className="relative inline-flex">
+          <div className={cn(
+            "absolute inset-0 blur-xl opacity-25 rounded-full",
+            `bg-gradient-to-r ${config.gradient}`
+          )} />
+          <div className="relative bg-background rounded-full p-6 shadow-inner">
+            <Icon className={cn("h-16 w-16", config.iconColor)} />
+          </div>
+        </div>
+        
+        {/* Title */}
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
           {config.title}
         </h1>
-        <p className={styles.error.message}>
+        
+        {/* Message */}
+        <p className="text-muted-foreground max-w-md mx-auto">
           {config.message}
         </p>
+        
+        {/* Error details in development */}
         {process.env.NODE_ENV === 'development' && error && (
-          <details className="text-left bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-            <summary className="cursor-pointer text-sm text-gray-600 dark:text-gray-400">
+          <details className="text-left">
+            <summary className="cursor-pointer inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <Bug className="h-4 w-4" />
               Error details
             </summary>
-            <pre className="mt-2 text-xs overflow-auto">
+            <Card className="mt-2 p-4 bg-muted/50 text-xs font-mono overflow-auto max-h-40">
               {error.stack}
-            </pre>
+            </Card>
           </details>
         )}
-        {config.actions}
-      </div>
+        
+        {/* Actions */}
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          {type === 'not-found' ? (
+            <Button asChild>
+              <Link href={`/${locale}`}>
+                <Home className="h-4 w-4 mr-2" />
+                {t.error.notFound.backToHome}
+              </Link>
+            </Button>
+          ) : (
+            <>
+              {reset && (
+                <Button onClick={reset} variant="default">
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  {type === 'post-error' ? t.error.post.retry : t.error.tryAgain}
+                </Button>
+              )}
+              <Button asChild variant="outline">
+                <Link href={`/${locale}`}>
+                  <Home className="h-4 w-4 mr-2" />
+                  {type === 'post-error' ? t.error.post.allPosts : t.error.goHome}
+                </Link>
+              </Button>
+            </>
+          )}
+        </div>
+      </Card>
     </div>
   );
 }
