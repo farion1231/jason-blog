@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface PaginationProps {
   currentPage: number;
@@ -53,53 +55,65 @@ export default function Pagination({ currentPage, totalPages, locale, baseUrl = 
   }
 
   return (
-    <nav className="flex justify-center items-center space-x-2 mt-12 mb-8" role="navigation" aria-label="Pagination">
+    <nav 
+      className="flex justify-center items-center gap-2 mt-12 mb-8" 
+      role="navigation" 
+      aria-label="Pagination"
+    >
       {/* 上一页 */}
-      {currentPage > 1 ? (
-        <Link
-          href={getPageUrl(currentPage - 1)}
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 
-                   bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 
-                   rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-500 
-                   dark:hover:text-blue-400 transition-all duration-200 hover:scale-105"
-          aria-label="Previous page"
-        >
-          <ChevronLeftIcon className="w-4 h-4 mr-1" />
-          <span className="hidden sm:inline">{isZh ? '上一页' : 'Previous'}</span>
-        </Link>
-      ) : (
-        <span className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 dark:text-gray-600 
-                       bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 
-                       rounded-full cursor-not-allowed opacity-50">
-          <ChevronLeftIcon className="w-4 h-4 mr-1" />
-          <span className="hidden sm:inline">{isZh ? '上一页' : 'Previous'}</span>
-        </span>
-      )}
+      <Button
+        variant={currentPage > 1 ? "outline" : "ghost"}
+        size="default"
+        disabled={currentPage <= 1}
+        asChild={currentPage > 1}
+        className={cn(
+          "rounded-full",
+          currentPage <= 1 && "opacity-50 cursor-not-allowed"
+        )}
+      >
+        {currentPage > 1 ? (
+          <Link href={getPageUrl(currentPage - 1)} aria-label="Previous page">
+            <ChevronLeft className="w-4 h-4 mr-1" />
+            <span className="hidden sm:inline">{isZh ? '上一页' : 'Previous'}</span>
+          </Link>
+        ) : (
+          <>
+            <ChevronLeft className="w-4 h-4 mr-1" />
+            <span className="hidden sm:inline">{isZh ? '上一页' : 'Previous'}</span>
+          </>
+        )}
+      </Button>
 
       {/* 页码 */}
-      <div className="flex items-center space-x-1">
+      <div className="flex items-center gap-1">
         {getPageNumbers().map((pageNumber, index) => (
           <span key={index}>
             {pageNumber === '...' ? (
-              <span className="px-3 py-2 text-gray-500 dark:text-gray-500">...</span>
+              <span className="px-3 py-2 text-muted-foreground">...</span>
             ) : (
               pageNumber === currentPage ? (
-                <span className="inline-flex items-center px-4 py-2 text-sm font-medium text-white 
-                             bg-gradient-to-r from-blue-500 to-pink-500 rounded-full shadow-md
-                             transform scale-110 transition-transform">
-                  {pageNumber}
-                </span>
-              ) : (
-                <Link
-                  href={getPageUrl(pageNumber as number)}
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 
-                           bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 
-                           rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-500 
-                           dark:hover:text-blue-400 transition-all duration-200 hover:scale-105"
-                  aria-label={`Go to page ${pageNumber}`}
+                <Button
+                  variant="default"
+                  size="icon"
+                  className="rounded-full w-10 h-10 shadow-md"
+                  aria-current="page"
                 >
                   {pageNumber}
-                </Link>
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full w-10 h-10"
+                  asChild
+                >
+                  <Link
+                    href={getPageUrl(pageNumber as number)}
+                    aria-label={`Go to page ${pageNumber}`}
+                  >
+                    {pageNumber}
+                  </Link>
+                </Button>
               )
             )}
           </span>
@@ -107,26 +121,28 @@ export default function Pagination({ currentPage, totalPages, locale, baseUrl = 
       </div>
 
       {/* 下一页 */}
-      {currentPage < totalPages ? (
-        <Link
-          href={getPageUrl(currentPage + 1)}
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 
-                   bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 
-                   rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-500 
-                   dark:hover:text-blue-400 transition-all duration-200 hover:scale-105"
-          aria-label="Next page"
-        >
-          <span className="hidden sm:inline">{isZh ? '下一页' : 'Next'}</span>
-          <ChevronRightIcon className="w-4 h-4 ml-1" />
-        </Link>
-      ) : (
-        <span className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 dark:text-gray-600 
-                       bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 
-                       rounded-full cursor-not-allowed opacity-50">
-          <span className="hidden sm:inline">{isZh ? '下一页' : 'Next'}</span>
-          <ChevronRightIcon className="w-4 h-4 ml-1" />
-        </span>
-      )}
+      <Button
+        variant={currentPage < totalPages ? "outline" : "ghost"}
+        size="default"
+        disabled={currentPage >= totalPages}
+        asChild={currentPage < totalPages}
+        className={cn(
+          "rounded-full",
+          currentPage >= totalPages && "opacity-50 cursor-not-allowed"
+        )}
+      >
+        {currentPage < totalPages ? (
+          <Link href={getPageUrl(currentPage + 1)} aria-label="Next page">
+            <span className="hidden sm:inline">{isZh ? '下一页' : 'Next'}</span>
+            <ChevronRight className="w-4 h-4 ml-1" />
+          </Link>
+        ) : (
+          <>
+            <span className="hidden sm:inline">{isZh ? '下一页' : 'Next'}</span>
+            <ChevronRight className="w-4 h-4 ml-1" />
+          </>
+        )}
+      </Button>
     </nav>
   );
 }

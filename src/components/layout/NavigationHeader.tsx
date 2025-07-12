@@ -3,15 +3,70 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { SearchBox } from '@/components/ui/SearchBox';
 import { useTranslations } from '@/hooks/useTranslations';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-const navLinkClasses = {
-  desktop: "text-gray-500 dark:text-gray-400 font-medium transition-colors relative hover:text-blue-500 after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full",
-  mobile: "text-gray-500 dark:text-gray-400 font-medium transition-colors hover:text-blue-500 px-2 py-1"
-};
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+interface NavItemProps {
+  href: string;
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+}
+
+function NavItem({ href, children, onClick, className }: NavItemProps) {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+  
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={cn(
+        "text-gray-500 dark:text-gray-400 font-medium transition-all duration-200 relative",
+        "hover:text-blue-500 dark:hover:text-blue-400",
+        "after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:h-0.5",
+        "after:bg-gradient-to-r after:from-blue-500 after:to-pink-500 after:transition-all",
+        isActive ? "text-blue-500 after:w-full" : "after:w-0 hover:after:w-full",
+        className
+      )}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function MobileNavItem({ href, children, onClick }: NavItemProps) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="text-gray-600 dark:text-gray-400 font-medium transition-colors hover:text-blue-500 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function Logo({ locale, text }: { locale: string; text: string }) {
+  return (
+    <Link 
+      href={`/${locale}`} 
+      className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent hover:scale-105 transition-transform"
+    >
+      {text}
+    </Link>
+  );
+}
 
 export function NavigationHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,92 +75,74 @@ export function NavigationHeader() {
   const locale = ['zh-CN', 'en'].includes(currentLocale) ? currentLocale : 'zh-CN';
   const t = useTranslations();
   
-  // 获取对应语言的链接
-  const getLocalizedPath = (path: string) => {
-    return `/${locale}${path}`;
-  };
+  const getLocalizedPath = (path: string) => `/${locale}${path}`;
+  
+  const navLinks: NavLink[] = [
+    { href: getLocalizedPath('/'), label: t.nav.home },
+    { href: getLocalizedPath('/archive'), label: t.nav.archive || (locale === 'zh-CN' ? '归档' : 'Archive') },
+    { href: getLocalizedPath('/tags'), label: t.nav.tags || (locale === 'zh-CN' ? '标签' : 'Tags') },
+    { href: getLocalizedPath('/projects'), label: t.nav.projects },
+    { href: getLocalizedPath('/about'), label: t.nav.about },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 glass border-b">
+    <header className="sticky top-0 z-50 glass border-b border-gray-200/20 dark:border-gray-800/20">
       <nav className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
-          <Link href={getLocalizedPath('/')} className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
-            {t.nav.blog}
-          </Link>
+          <Logo locale={locale} text={t.nav.blog} />
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            <Link href={getLocalizedPath('/')} className={navLinkClasses.desktop}>{t.nav.home}</Link>
-            <Link href={getLocalizedPath('/archive')} className={navLinkClasses.desktop}>{t.nav.archive || (locale === 'zh-CN' ? '归档' : 'Archive')}</Link>
-            <Link href={getLocalizedPath('/tags')} className={navLinkClasses.desktop}>{t.nav.tags || (locale === 'zh-CN' ? '标签' : 'Tags')}</Link>
-            <Link href={getLocalizedPath('/projects')} className={navLinkClasses.desktop}>{t.nav.projects}</Link>
-            <Link href={getLocalizedPath('/about')} className={navLinkClasses.desktop}>{t.nav.about}</Link>
-            <SearchBox />
-            <LanguageToggle />
-            <ThemeToggle />
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+            {navLinks.map((link) => (
+              <NavItem key={link.href} href={link.href}>
+                {link.label}
+              </NavItem>
+            ))}
+            <div className="flex items-center gap-3 ml-4">
+              <SearchBox />
+              <LanguageToggle />
+              <ThemeToggle />
+            </div>
           </div>
           
-          {/* Mobile menu button and theme toggle */}
+          {/* Mobile Controls */}
           <div className="md:hidden flex items-center gap-2">
             <LanguageToggle />
             <ThemeToggle />
-            <button 
-              className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors"
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              className="rounded-full"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {mobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
+              {mobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
           </div>
         </div>
         
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden glass-strong border-t py-4">
-            <div className="flex flex-col space-y-4">
-              <div className="px-2">
+          <div className="md:hidden pb-4 animate-in slide-in-from-top-2">
+            <div className="glass-strong rounded-2xl p-4 mt-2">
+              <div className="mb-4">
                 <SearchBox />
               </div>
-              <Link 
-                href={getLocalizedPath('/')} 
-                className={navLinkClasses.mobile}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t.nav.home}
-              </Link>
-              <Link 
-                href={getLocalizedPath('/archive')} 
-                className={navLinkClasses.mobile}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t.nav.archive || (locale === 'zh-CN' ? '归档' : 'Archive')}
-              </Link>
-              <Link 
-                href={getLocalizedPath('/tags')} 
-                className={navLinkClasses.mobile}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t.nav.tags || (locale === 'zh-CN' ? '标签' : 'Tags')}
-              </Link>
-              <Link 
-                href={getLocalizedPath('/projects')} 
-                className={navLinkClasses.mobile}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t.nav.projects}
-              </Link>
-              <Link 
-                href={getLocalizedPath('/about')} 
-                className={navLinkClasses.mobile}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t.nav.about}
-              </Link>
+              <div className="flex flex-col space-y-1">
+                {navLinks.map((link) => (
+                  <MobileNavItem
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </MobileNavItem>
+                ))}
+              </div>
             </div>
           </div>
         )}

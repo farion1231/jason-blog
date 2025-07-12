@@ -2,15 +2,150 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Search, X, Loader2 } from 'lucide-react'
 import { useDebounce } from '@/hooks/useDebounce'
 import { getSearchSuggestions } from '@/sanity/lib/fetch'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface SearchSuggestion {
   title: string
   slug: {
     current: string
   }
+}
+
+interface SearchInputProps {
+  query: string
+  onQueryChange: (value: string) => void
+  onFocus: () => void
+  onKeyDown: (e: React.KeyboardEvent) => void
+  onSubmit: (e: React.FormEvent) => void
+  onClear: () => void
+  placeholder: string
+  inputRef: React.RefObject<HTMLInputElement>
+}
+
+function SearchInput({ 
+  query, 
+  onQueryChange, 
+  onFocus, 
+  onKeyDown, 
+  onSubmit, 
+  onClear, 
+  placeholder,
+  inputRef 
+}: SearchInputProps) {
+  return (
+    <form onSubmit={onSubmit} className="relative">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <Input
+        ref={inputRef}
+        type="text"
+        value={query}
+        onChange={(e) => onQueryChange(e.target.value)}
+        onFocus={onFocus}
+        onKeyDown={onKeyDown}
+        placeholder={placeholder}
+        className="pl-10 pr-10 rounded-full"
+      />
+      {query && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={onClear}
+          className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+      )}
+    </form>
+  )
+}
+
+interface SearchResultsProps {
+  suggestions: SearchSuggestion[]
+  selectedIndex: number
+  isLoading: boolean
+  query: string
+  locale: string
+  onItemClick: (slug: string) => void
+  onViewAll: () => void
+}
+
+function SearchResults({ 
+  suggestions, 
+  selectedIndex, 
+  isLoading, 
+  query, 
+  locale,
+  onItemClick,
+  onViewAll
+}: SearchResultsProps) {
+  if (isLoading) {
+    return (
+      <div className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground">
+        <Loader2 className="w-4 h-4 animate-spin" />
+        {locale === 'zh-CN' ? '搜索中...' : 'Searching...'}
+      </div>
+    )
+  }
+
+  if (suggestions.length === 0) {
+    return (
+      <div className="px-4 py-3">
+        <p className="text-sm text-muted-foreground">
+          {locale === 'zh-CN' ? '没有找到相关文章' : 'No posts found'}
+        </p>
+        <Button
+          variant="link"
+          size="sm"
+          onClick={onViewAll}
+          className="mt-2 h-auto p-0 text-primary"
+        >
+          {locale === 'zh-CN' ? `搜索"${query}"` : `Search for "${query}"`}
+        </Button>
+      </div>
+    )
+  }
+
+  return (
+    <ul className="py-2">
+      {suggestions.map((suggestion, index) => (
+        <li key={suggestion.slug.current}>
+          <button
+            onClick={() => onItemClick(suggestion.slug.current)}
+            className={cn(
+              "w-full text-left px-4 py-2 text-sm transition-colors",
+              index === selectedIndex 
+                ? "bg-accent text-accent-foreground" 
+                : "text-foreground hover:bg-accent hover:text-accent-foreground"
+            )}
+          >
+            {suggestion.title}
+          </button>
+        </li>
+      ))}
+      <li className="border-t">
+        <button
+          onClick={onViewAll}
+          className={cn(
+            "w-full text-left px-4 py-2 text-sm font-medium transition-colors",
+            selectedIndex === suggestions.length 
+              ? "bg-accent text-accent-foreground" 
+              : "text-primary hover:bg-accent hover:text-accent-foreground"
+          )}
+        >
+          {locale === 'zh-CN' 
+            ? `查看所有"${query}"的搜索结果` 
+            : `View all results for "${query}"`
+          }
+        </button>
+      </li>
+    </ul>
+  )
 }
 
 export function SearchBox() {
@@ -76,25 +211,32 @@ export function SearchBox() {
     } else if (e.key === 'Enter') {
       e.preventDefault()
       if (selectedIndex >= 0 && suggestions[selectedIndex]) {
-        router.push(`/${locale}/posts/${suggestions[selectedIndex].slug.current}`)
-        setIsOpen(false)
-        setQuery('')
+        navigateToPost(suggestions[selectedIndex].slug.current)
       } else if (query.trim()) {
-        router.push(`/${locale}/search?q=${encodeURIComponent(query.trim())}`)
-        setIsOpen(false)
+        navigateToSearch()
       }
     } else if (e.key === 'Escape') {
       setIsOpen(false)
       inputRef.current?.blur()
     }
-  }, [suggestions, selectedIndex, query, locale, router])
+  }, [suggestions, selectedIndex, query])
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
+  const navigateToPost = (slug: string) => {
+    router.push(`/${locale}/posts/${slug}`)
+    setIsOpen(false)
+    setQuery('')
+  }
+
+  const navigateToSearch = () => {
     if (query.trim()) {
       router.push(`/${locale}/search?q=${encodeURIComponent(query.trim())}`)
       setIsOpen(false)
     }
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    navigateToSearch()
   }
 
   const clearSearch = () => {
@@ -104,101 +246,37 @@ export function SearchBox() {
     inputRef.current?.focus()
   }
 
+  const handleQueryChange = (value: string) => {
+    setQuery(value)
+    setIsOpen(true)
+    setSelectedIndex(-1)
+  }
+
   return (
     <div ref={searchRef} className="relative w-full max-w-md">
-      <form onSubmit={handleSearch}>
-        <div className="relative">
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value)
-              setIsOpen(true)
-              setSelectedIndex(-1)
-            }}
-            onFocus={() => setIsOpen(true)}
-            onKeyDown={handleKeyDown}
-            placeholder={locale === 'zh-CN' ? '搜索文章...' : 'Search posts...'}
-            className="w-full px-10 py-2 text-sm rounded-full border border-gray-300 dark:border-gray-600 
-                     bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     transition-all duration-200"
-          />
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          {query && (
-            <button
-              type="button"
-              onClick={clearSearch}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full
-                       hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            >
-              <XMarkIcon className="w-4 h-4 text-gray-500" />
-            </button>
-          )}
-        </div>
-      </form>
+      <SearchInput
+        query={query}
+        onQueryChange={handleQueryChange}
+        onFocus={() => setIsOpen(true)}
+        onKeyDown={handleKeyDown}
+        onSubmit={handleSubmit}
+        onClear={clearSearch}
+        placeholder={locale === 'zh-CN' ? '搜索文章...' : 'Search posts...'}
+        inputRef={inputRef}
+      />
 
       {/* 搜索建议下拉框 */}
       {isOpen && query.length >= 2 && (
-        <div className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg 
-                      border border-gray-200 dark:border-gray-700 overflow-hidden">
-          {isLoading ? (
-            <div className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
-              {locale === 'zh-CN' ? '搜索中...' : 'Searching...'}
-            </div>
-          ) : suggestions.length > 0 ? (
-            <ul className="py-2">
-              {suggestions.map((suggestion, index) => (
-                <li key={suggestion.slug.current}>
-                  <button
-                    onClick={() => {
-                      router.push(`/${locale}/posts/${suggestion.slug.current}`)
-                      setIsOpen(false)
-                      setQuery('')
-                    }}
-                    className={`w-full text-left px-4 py-2 text-sm transition-colors
-                              ${index === selectedIndex 
-                                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
-                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                              }`}
-                  >
-                    {suggestion.title}
-                  </button>
-                </li>
-              ))}
-              <li className="border-t border-gray-200 dark:border-gray-700">
-                <button
-                  onClick={handleSearch}
-                  className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors
-                            ${selectedIndex === suggestions.length 
-                              ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
-                              : 'text-blue-600 dark:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700'
-                            }`}
-                >
-                  {locale === 'zh-CN' 
-                    ? `查看所有"${query}"的搜索结果` 
-                    : `View all results for "${query}"`
-                  }
-                </button>
-              </li>
-            </ul>
-          ) : (
-            <div className="px-4 py-3">
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {locale === 'zh-CN' ? '没有找到相关文章' : 'No posts found'}
-              </p>
-              <button
-                onClick={handleSearch}
-                className="mt-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                {locale === 'zh-CN' 
-                  ? `搜索"${query}"` 
-                  : `Search for "${query}"`
-                }
-              </button>
-            </div>
-          )}
+        <div className="absolute z-50 w-full mt-2 bg-background rounded-xl shadow-lg border overflow-hidden">
+          <SearchResults
+            suggestions={suggestions}
+            selectedIndex={selectedIndex}
+            isLoading={isLoading}
+            query={query}
+            locale={locale}
+            onItemClick={navigateToPost}
+            onViewAll={navigateToSearch}
+          />
         </div>
       )}
     </div>
