@@ -1,3 +1,8 @@
+/**
+ * 文章卡片组件
+ * 用于在列表页面展示文章摘要信息，包含标题、描述、发布日期、阅读时间、标签等
+ * 采用玻璃拟态设计风格，支持悬停交互效果
+ */
 import { PostMeta } from '@/types/post';
 import { type Locale } from '@/config/i18n';
 import Link from 'next/link';
@@ -6,25 +11,32 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock } from 'lucide-react';
 
+// 文章卡片组件属性接口
 interface PostCardProps {
-  post: PostMeta;
-  locale: Locale;
-  dateLocale: object; // 保留参数以保持接口兼容性
-  t: {
-    readingTime: (time: number) => string;
-    readMore: string;
+  post: PostMeta;         // 文章元数据
+  locale: Locale;         // 当前语言环境
+  dateLocale: object;     // 保留参数以保持接口兼容性
+  t: {                    // 国际化翻译函数
+    readingTime: (time: number) => string;  // 阅读时间格式化函数
+    readMore: string;                       // "阅读更多"文本
   };
 }
 
+/**
+ * 文章卡片主组件
+ * 渲染单篇文章的卡片视图，包含完整的文章信息和交互元素
+ */
 export default function PostCard({ post, locale, t }: PostCardProps) {
   return (
     <Card variant="glass" hover className="group overflow-hidden">
+      {/* 文章头部：标题和元信息 */}
       <CardHeader>
         <CardTitle className="group-hover:text-blue-500 transition-colors">
           <Link href={`/${locale}/posts/${post.slug}`}>
             {post.title}
           </Link>
         </CardTitle>
+        {/* 元信息：发布日期和阅读时间 */}
         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <span className="inline-flex items-center gap-1">
             <Calendar className="w-3 h-3" />
@@ -37,6 +49,7 @@ export default function PostCard({ post, locale, t }: PostCardProps) {
         </div>
       </CardHeader>
       
+      {/* 文章描述（如果存在） */}
       {post.description && (
         <CardContent>
           <CardDescription className="text-base leading-relaxed">
@@ -45,7 +58,9 @@ export default function PostCard({ post, locale, t }: PostCardProps) {
         </CardContent>
       )}
       
+      {/* 文章底部：标签和"阅读更多"按钮 */}
       <CardFooter className="flex items-center justify-between">
+        {/* 标签列表 */}
         {post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {post.tags.map((tag, index) => (
@@ -59,6 +74,7 @@ export default function PostCard({ post, locale, t }: PostCardProps) {
           </div>
         )}
         
+        {/* "阅读更多"链接按钮 */}
         <Button
           variant="link"
           size="sm"
