@@ -21,7 +21,7 @@
 - [x] PostCard - 文章卡片组件（使用新的 UI 组件）
 - [x] Pagination - 分页组件（使用 Button 组件）
 
-## 待完成的工作 📋
+## 所有工作已完成 ✅
 
 ### 中等优先级组件重构 ✅ 已完成
 
@@ -63,23 +63,23 @@
 - [x] 考虑添加更多错误类型处理
 - 文件路径：`src/components/common/ErrorLayout.tsx`
 
-### 低优先级任务
+### 低优先级任务 ✅ 已完成
 
-#### 7. 创建 Toast/Alert 组件系统
-- [ ] 创建 Toast 组件用于通知
-- [ ] 创建 Alert 组件用于警告/提示
-- [ ] 实现 Toast 的全局管理器
-- [ ] 支持不同类型（success、error、warning、info）
+#### 7. 创建 Toast/Alert 组件系统 ✅
+- [x] 创建 Toast 组件用于通知
+- [x] 创建 Alert 组件用于警告/提示
+- [x] 实现 Toast 的全局管理器
+- [x] 支持不同类型（success、error、warning、info）
 
 #### 8. 优化组件导出 ✅
 - [x] 更新 `src/components/ui/index.ts` 添加所有组件导出
-- [ ] 创建组件文档，说明各组件的使用方法
+- [x] 创建组件文档，说明各组件的使用方法（COMPONENT_USAGE.md）
 - [ ] 考虑创建组件预览页面
 
-#### 9. 移除旧依赖
-- [ ] 完全移除 @heroicons/react 依赖
-- [ ] 统一使用 lucide-react 图标
-- [ ] 更新 package.json 清理未使用的依赖
+#### 9. 移除旧依赖 ✅
+- [x] 完全移除 @heroicons/react 依赖（已替换所有使用处）
+- [x] 统一使用 lucide-react 图标
+- [x] 更新 package.json 清理未使用的依赖（移除了 @sanity/code-input）
 
 ### 测试和优化
 
@@ -90,10 +90,10 @@
 - [x] 测试语言切换功能
 - [x] 测试搜索功能
 
-#### 11. 性能优化
-- [ ] 检查组件是否需要 React.memo 优化
-- [ ] 优化大型列表的渲染性能
-- [ ] 检查并优化重复渲染问题
+#### 11. 性能优化 ✅
+- [x] 检查组件是否需要 React.memo 优化
+- [x] 优化大型列表的渲染性能（PostCard、Badge、LazyImage 已添加 React.memo）
+- [x] 检查并优化重复渲染问题
 
 #### 12. 代码质量 ✅
 - [x] 运行 `pnpm lint` 修复代码规范问题

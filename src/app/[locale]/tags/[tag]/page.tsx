@@ -1,8 +1,14 @@
+/**
+ * 标签详情页面
+ * 展示特定标签下的所有文章列表
+ * 支持中英文切换，显示文章标题、描述、发布时间和标签
+ */
+
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getPostsByTag } from '@/sanity/lib/fetch'
-import { TagIcon } from '@heroicons/react/24/outline'
+import { Tag } from 'lucide-react'
 
 export function generateMetadata({ 
   params 
@@ -71,7 +77,7 @@ export default async function TagPage({
       <div className="max-w-4xl mx-auto px-6">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-3">
-            <TagIcon className="w-8 h-8" />
+            <Tag className="w-8 h-8" />
             <span className="bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
               #{tag}
             </span>
@@ -139,7 +145,7 @@ export default async function TagPage({
           </div>
         ) : (
           <div className="text-center py-12">
-            <TagIcon className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+            <Tag className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               {isZh 
                 ? `暂无标记为"${tag}"的文章` 

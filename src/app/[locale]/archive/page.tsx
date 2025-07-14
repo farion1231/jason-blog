@@ -1,8 +1,14 @@
+/**
+ * 归档页面组件
+ * 按年份和月份展示所有文章，提供时间线式的浏览体验
+ * 支持中英文切换，展示文章标题、发布时间、阅读时长和标签
+ */
+
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getPostsByYear } from '@/sanity/lib/fetch'
-import { CalendarIcon, ClockIcon } from '@heroicons/react/24/outline'
+import { Calendar, Clock } from 'lucide-react'
 
 export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
   const isZh = params.locale === 'zh-CN'
@@ -75,7 +81,7 @@ export default async function ArchivePage({ params }: { params: { locale: string
     <div className="min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 flex items-center gap-3">
-          <CalendarIcon className="w-8 h-8" />
+          <Calendar className="w-8 h-8" />
           {isZh ? '文章归档' : 'Archive'}
         </h1>
 
@@ -119,13 +125,13 @@ export default async function ArchivePage({ params }: { params: { locale: string
                               
                               <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
                                 <time className="flex items-center gap-1">
-                                  <CalendarIcon className="w-4 h-4" />
+                                  <Calendar className="w-4 h-4" />
                                   {new Date(post.publishedAt).toLocaleDateString(locale)}
                                 </time>
                                 
                                 {post.readingTime && (
                                   <span className="flex items-center gap-1">
-                                    <ClockIcon className="w-4 h-4" />
+                                    <Clock className="w-4 h-4" />
                                     {isZh ? `${post.readingTime} 分钟` : `${post.readingTime} min`}
                                   </span>
                                 )}
@@ -160,7 +166,7 @@ export default async function ArchivePage({ params }: { params: { locale: string
           </div>
         ) : (
           <div className="text-center py-12">
-            <CalendarIcon className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+            <Calendar className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
             <p className="text-gray-600 dark:text-gray-400">
               {isZh ? '暂无文章' : 'No posts yet'}
             </p>

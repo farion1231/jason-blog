@@ -1,9 +1,15 @@
+/**
+ * 搜索结果组件
+ * 展示搜索表单和搜索结果，支持关键词高亮显示
+ * 包含搜索输入框、结果列表和空状态提示
+ */
+
 'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { Search } from 'lucide-react'
 import { highlightText } from '@/utils/highlightText'
 
 interface Post {
@@ -76,7 +82,7 @@ export function SearchResults({ posts, query, locale, error }: SearchResultsProp
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                      transition-all duration-200"
           />
-          <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
           <button
             type="submit"
             className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-blue-500 text-white 
@@ -141,7 +147,7 @@ export function SearchResults({ posts, query, locale, error }: SearchResultsProp
             </>
           ) : (
             <div className="text-center py-12">
-              <MagnifyingGlassIcon className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <Search className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-600 dark:text-gray-400 mb-4">
                 {locale === 'zh-CN' 
                   ? `没有找到关于"${query}"的文章` 

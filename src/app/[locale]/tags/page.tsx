@@ -1,8 +1,14 @@
+/**
+ * 标签列表页面
+ * 展示所有文章标签，包含标签云和列表两种视图
+ * 支持中英文切换，点击标签可查看相关文章
+ */
+
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getAllTags } from '@/sanity/lib/fetch'
-import { TagIcon } from '@heroicons/react/24/outline'
+import { Tag } from 'lucide-react'
 import { TagCloud } from '@/components/ui/TagCloud'
 
 export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
@@ -57,7 +63,7 @@ export default async function TagsPage({ params }: { params: { locale: string } 
     <div className="min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 flex items-center gap-3">
-          <TagIcon className="w-8 h-8" />
+          <Tag className="w-8 h-8" />
           {isZh ? '所有标签' : 'All Tags'}
         </h1>
 
@@ -80,7 +86,7 @@ export default async function TagsPage({ params }: { params: { locale: string } 
                              bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700
                              transition-colors duration-200"
                   >
-                    <TagIcon className="w-4 h-4 text-gray-400 group-hover:text-blue-500 
+                    <Tag className="w-4 h-4 text-gray-400 group-hover:text-blue-500 
                                       dark:group-hover:text-blue-400 transition-colors" />
                     <span className="text-gray-700 dark:text-gray-300 group-hover:text-blue-500 
                                    dark:group-hover:text-blue-400 transition-colors">
@@ -93,7 +99,7 @@ export default async function TagsPage({ params }: { params: { locale: string } 
           </>
         ) : (
           <div className="text-center py-12">
-            <TagIcon className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+            <Tag className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
             <p className="text-gray-600 dark:text-gray-400">
               {isZh ? '暂无标签' : 'No tags yet'}
             </p>

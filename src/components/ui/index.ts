@@ -1,3 +1,4 @@
+// 基础 UI 组件
 export * from './button'
 export * from './card'
 export * from './badge'
@@ -9,8 +10,10 @@ export * from './dialog'
 export * from './dropdown'
 export * from './switch'
 export * from './toggle'
+export * from './toast'
+export * from './alert'
 
-// Complex components
+// 复杂组件
 export * from './ThemeToggle'
 export * from './LanguageToggle'
 export * from './SearchBox'

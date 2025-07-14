@@ -2,10 +2,11 @@
  * 懒加载图片组件
  * 提供图片懒加载、加载状态指示和错误处理功能
  * 基于 Next.js Image 组件构建，支持加载动画和错误回退
+ * 使用 React.memo 优化性能，避免不必要的重新渲染
  */
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 // 懒加载图片组件属性接口
@@ -22,7 +23,7 @@ interface LazyImageProps {
  * 懒加载图片主组件
  * 集成了加载状态、错误处理和平滑过渡效果
  */
-export default function LazyImage({ 
+function LazyImage({ 
   src, 
   alt, 
   width, 
@@ -68,3 +69,21 @@ export default function LazyImage({
     </div>
   );
 }
+
+/**
+ * 自定义比较函数
+ * 只有当图片源或关键属性发生变化时才重新渲染
+ */
+function arePropsEqual(prevProps: LazyImageProps, nextProps: LazyImageProps) {
+  return (
+    prevProps.src === nextProps.src &&
+    prevProps.alt === nextProps.alt &&
+    prevProps.width === nextProps.width &&
+    prevProps.height === nextProps.height &&
+    prevProps.className === nextProps.className &&
+    prevProps.priority === nextProps.priority
+  );
+}
+
+// 导出使用 React.memo 优化的组件
+export default React.memo(LazyImage, arePropsEqual);

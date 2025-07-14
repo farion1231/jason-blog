@@ -2,7 +2,9 @@
  * 文章卡片组件
  * 用于在列表页面展示文章摘要信息，包含标题、描述、发布日期、阅读时间、标签等
  * 采用玻璃拟态设计风格，支持悬停交互效果
+ * 使用 React.memo 优化性能，避免不必要的重新渲染
  */
+import React from 'react';
 import { PostMeta } from '@/types/post';
 import { type Locale } from '@/config/i18n';
 import Link from 'next/link';
@@ -26,7 +28,7 @@ interface PostCardProps {
  * 文章卡片主组件
  * 渲染单篇文章的卡片视图，包含完整的文章信息和交互元素
  */
-export default function PostCard({ post, locale, t }: PostCardProps) {
+function PostCard({ post, locale, t }: PostCardProps) {
   return (
     <Card variant="glass" hover className="group overflow-hidden">
       {/* 文章头部：标题和元信息 */}
@@ -90,3 +92,25 @@ export default function PostCard({ post, locale, t }: PostCardProps) {
     </Card>
   );
 }
+
+/**
+ * 自定义比较函数
+ * 通过比较关键属性来决定是否需要重新渲染
+ * 只有当文章的核心信息发生变化时才重新渲染
+ */
+function arePropsEqual(prevProps: PostCardProps, nextProps: PostCardProps) {
+  return (
+    // 比较文章的核心属性
+    prevProps.post.slug === nextProps.post.slug &&
+    prevProps.post.title === nextProps.post.title &&
+    prevProps.post.date === nextProps.post.date &&
+    prevProps.post.description === nextProps.post.description &&
+    prevProps.post.readingTime === nextProps.post.readingTime &&
+    prevProps.locale === nextProps.locale &&
+    // 深度比较标签数组
+    JSON.stringify(prevProps.post.tags) === JSON.stringify(nextProps.post.tags)
+  );
+}
+
+// 导出使用 React.memo 优化的组件
+export default React.memo(PostCard, arePropsEqual);
