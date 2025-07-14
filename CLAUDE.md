@@ -124,3 +124,164 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=项目ID
 NEXT_PUBLIC_SANITY_DATASET=数据集名称
 SANITY_API_READ_TOKEN=读取令牌（可选）
 ```
+
+## 代码注释规范
+
+### 注释原则
+
+**所有代码都必须添加详细的中文注释**，遵循以下规则：
+
+1. **文件级注释**：每个组件/模块文件顶部必须有功能说明
+2. **函数级注释**：所有导出函数/组件都要有详细说明
+3. **复杂逻辑注释**：关键代码段必须有行内注释
+4. **接口注释**：TypeScript 接口的每个属性都要注释
+
+### 注释格式标准
+
+**1. 文件顶部注释**
+```typescript
+/**
+ * 组件名称和主要功能描述
+ * 详细说明组件的用途、特性和在系统中的作用
+ * 如有特殊依赖或注意事项也要说明
+ */
+```
+
+**2. 组件/函数注释**
+```typescript
+/**
+ * 函数/组件的具体功能说明
+ * @param paramName 参数说明
+ * @returns 返回值说明
+ * 
+ * @example
+ * // 使用示例（如适用）
+ * functionName(param)
+ */
+```
+
+**3. 接口注释**
+```typescript
+// 接口整体说明
+interface ComponentProps {
+  title: string;        // 标题文本
+  isVisible: boolean;   // 是否可见
+  onClick?: () => void; // 点击事件处理器（可选）
+}
+```
+
+**4. 行内注释**
+```typescript
+// 重要逻辑的说明
+const result = complexFunction(); 
+
+{/* JSX 中的重要元素说明 */}
+<div className="important-section">
+  {/* 条件渲染的业务逻辑解释 */}
+  {isVisible && <Component />}
+</div>
+```
+
+### 注释内容要求
+
+**必须包含的信息：**
+- 功能目的和业务意义
+- 参数说明和类型信息  
+- 返回值或渲染内容说明
+- 重要的设计决策和原因
+- 与其他模块的关系
+- 特殊情况和边界条件处理
+
+**业务逻辑注释：**
+- 数据流向和处理逻辑
+- 状态管理和生命周期
+- 用户交互和响应机制
+- 性能优化考虑
+
+**技术实现注释：**
+- 算法选择原因
+- 第三方库使用说明
+- 配置参数含义
+- 兼容性和限制说明
+
+### 示例注释模板
+
+**React 组件示例：**
+```typescript
+/**
+ * 文章卡片组件
+ * 用于在列表页面展示文章摘要信息，包含标题、描述、发布日期、阅读时间、标签等
+ * 采用玻璃拟态设计风格，支持悬停交互效果
+ */
+interface PostCardProps {
+  post: PostMeta;         // 文章元数据
+  locale: Locale;         // 当前语言环境
+  t: TranslationFunction; // 国际化翻译函数
+}
+
+/**
+ * 文章卡片主组件
+ * 渲染单篇文章的卡片视图，包含完整的文章信息和交互元素
+ */
+export default function PostCard({ post, locale, t }: PostCardProps) {
+  return (
+    <Card variant="glass" hover className="group overflow-hidden">
+      {/* 文章头部：标题和元信息 */}
+      <CardHeader>
+        {/* 标题链接 - 悬停时颜色变化 */}
+        <CardTitle className="group-hover:text-blue-500 transition-colors">
+          <Link href={`/${locale}/posts/${post.slug}`}>
+            {post.title}
+          </Link>
+        </CardTitle>
+      </CardHeader>
+    </Card>
+  );
+}
+```
+
+**Hook 示例：**
+```typescript
+/**
+ * 防抖 Hook
+ * 延迟更新值，避免频繁触发，常用于搜索输入、API调用等场景
+ * 在指定延迟时间内，如果值再次改变，则重新计时
+ */
+
+/**
+ * 防抖Hook主函数
+ * @param value 需要防抖的值
+ * @param delay 延迟时间（毫秒）
+ * @returns 防抖处理后的值
+ */
+export function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+
+  useEffect(() => {
+    // 设置定时器，延迟更新防抖值
+    const handler = setTimeout(() => {
+      setDebouncedValue(value)
+    }, delay)
+
+    // 清理函数：在值再次改变或组件卸载时清除定时器
+    return () => clearTimeout(handler)
+  }, [value, delay]) // 依赖值或延迟时间改变时重新执行
+
+  return debouncedValue
+}
+```
+
+### 注释质量检查
+
+**编写代码时必须确保：**
+- 每个文件都有顶部功能说明
+- 所有导出的函数/组件都有详细注释
+- 复杂业务逻辑有清晰的解释
+- 接口定义完整且每个属性都有说明
+- 重要的 JSX 结构有适当的注释
+
+**AI 助手工作时：**
+- 新建任何组件都要按此规范添加注释
+- 修改现有代码时要更新相关注释
+- 重构代码时要保持注释的准确性
+- 发现缺失注释时要主动补充
